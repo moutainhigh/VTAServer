@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hgsoft.ygz.vtams.transfer.dao.SequenceMapper">
+
+    <!-- 表字段与Model属性映射-->
+    <resultMap type="com.hgsoft.ygz.vtams.transfer.model.map.HallSeq" id="HallSeqMap">
+        <result property="agencyId" column="AGENCY_ID"/>
+        <result property="cityCode" column="CITY_CODE"/>
+        <result property="districtCode" column="DISTRICT_CODE"/>
+        <result property="seq" column="CURRENT_SEQ"/>
+        <result property="status" column="STATUS"/>
+        <result property="creationDate" column="CREATION_DATE"/>
+        <result property="lastUpdateDate" column="LAST_UPDATE_DATE"/>
+    </resultMap>
+
+    <!-- 表字段与Model属性映射-->
+    <resultMap type="com.hgsoft.ygz.vtams.transfer.model.map.MobileServiceSeq" id="MobileServiceSeqMap">
+        <result property="agencyId" column="AGENCY_ID"/>
+        <result property="seq" column="CURRENT_SEQ"/>
+        <result property="status" column="STATUS"/>
+        <result property="creationDate" column="CREATION_DATE"/>
+        <result property="lastUpdateDate" column="LAST_UPDATE_DATE"/>
+    </resultMap>
+
+    <!-- 表字段与Model属性映射-->
+    <resultMap type="com.hgsoft.ygz.vtams.transfer.model.map.TerminalSeq" id="TerminalSeqMap">
+        <result property="agencyId" column="AGENCY_ID"/>
+        <result property="cityCode" column="CITY_CODE"/>
+        <result property="districtCode" column="DISTRICT_CODE"/>
+        <result property="seq" column="CURRENT_SEQ"/>
+        <result property="status" column="STATUS"/>
+        <result property="creationDate" column="CREATION_DATE"/>
+        <result property="lastUpdateDate" column="LAST_UPDATE_DATE"/>
+    </resultMap>
+
+    <!-- 表字段与Model属性映射-->
+    <resultMap type="com.hgsoft.ygz.vtams.transfer.model.map.OnlineSeq" id="OnlineSeqMap">
+        <result property="agencyId" column="AGENCY_ID"/>
+        <result property="channel" column="CHANNEL"/>
+        <result property="seq" column="CURRENT_SEQ"/>
+        <result property="status" column="STATUS"/>
+        <result property="creationDate" column="CREATION_DATE"/>
+        <result property="lastUpdateDate" column="LAST_UPDATE_DATE"/>
+    </resultMap>
+
+    <!-- 表字段与Model属性映射-->
+    <resultMap type="com.hgsoft.ygz.vtams.transfer.model.map.CustomerSeq" id="CustomerSeqMap">
+        <result property="issuserId" column="ISSUSER_ID"/>
+        <result property="yearMonthDay" column="YEAR_MONTH_DAY"/>
+        <result property="seq" column="CURRENT_SEQ"/>
+        <result property="status" column="STATUS"/>
+        <result property="creationDate" column="CREATION_DATE"/>
+        <result property="lastUpdateDate" column="LAST_UPDATE_DATE"/>
+    </resultMap>
+
+    <!-- 表字段与Model属性映射-->
+    <resultMap type="com.hgsoft.ygz.vtams.transfer.model.map.RefundSeq" id="RefundSeqMap">
+        <result property="channelType" column="CHANNEL_TYPE"/>
+        <result property="pointCode" column="POINT_CODE"/>
+        <result property="dateStr" column="DATE_STR"/>
+        <result property="seq" column="CURRENT_SEQ"/>
+        <result property="status" column="STATUS"/>
+        <result property="creationDate" column="CREATION_DATE"/>
+        <result property="lastUpdateDate" column="LAST_UPDATE_DATE"/>
+    </resultMap>
+
+
+    <!-- 表字段与Model属性映射-->
+    <resultMap type="com.hgsoft.ygz.vtams.transfer.model.map.RechargeSeq" id="RechargeSeqMap">
+        <result property="channelType" column="CHANNEL_TYPE"/>
+        <result property="pointCode" column="POINT_CODE"/>
+        <result property="dateStr" column="DATE_STR"/>
+        <result property="seq" column="CURRENT_SEQ"/>
+        <result property="status" column="STATUS"/>
+        <result property="creationDate" column="CREATION_DATE"/>
+        <result property="lastUpdateDate" column="LAST_UPDATE_DATE"/>
+    </resultMap>
+
+    <!-- 获取上一条服务网点信息的顺序码 -->
+    <select id="getLastHallSeq" parameterType="com.hgsoft.ygz.vtams.transfer.model.map.HallSeq" resultMap="HallSeqMap">
+        SELECT * FROM VTA_HALL_SEQ WHERE ROWID IN (SELECT RID FROM (SELECT ROWNUM RN, RID
+        FROM (SELECT ROWID RID FROM VTA_HALL_SEQ
+        where AGENCY_ID=#{agencyId,jdbcType=VARCHAR} and CITY_CODE=#{cityCode,jdbcType=VARCHAR} and DISTRICT_CODE=#{districtCode,jdbcType=VARCHAR}
+        ORDER BY CURRENT_SEQ DESC) WHERE ROWNUM &lt;= 1) WHERE RN &gt; 0 ) ORDER BY CURRENT_SEQ DESC
+    </select>
+
+    <!-- 新增一条服务网点顺序码的记录 -->
+    <insert id="saveHallSeq" parameterType="com.hgsoft.ygz.vtams.transfer.model.map.HallSeq">
+        INSERT INTO VTA_HALL_SEQ ( "AGENCY_ID", "CITY_CODE", "DISTRICT_CODE", "CURRENT_SEQ", "LAST_UPDATE_DATE", "CREATION_DATE", "STATUS")
+        VALUES ( #{agencyId,jdbcType=VARCHAR}, #{cityCode,jdbcType=VARCHAR}, #{districtCode,jdbcType=VARCHAR}, #{seq,jdbcType=INTEGER},
+        #{lastUpdateDate,jdbcType=DATE}, #{creationDate,jdbcType=DATE}, #{status,jdbcType=INTEGER})
+    </insert>
+
+    <!-- 获取上一条流动服务网点信息的顺序码 -->
+    <select id="getLastMobileServiceSeq" parameterType="com.hgsoft.ygz.vtams.transfer.model.map.MobileServiceSeq"
+            resultMap="MobileServiceSeqMap">
+        SELECT * FROM VTA_MOBILESERVICE_SEQ WHERE ROWID IN (SELECT RID FROM (SELECT ROWNUM RN, RID
+        FROM (SELECT ROWID RID FROM VTA_MOBILESERVICE_SEQ
+        where AGENCY_ID=#{agencyId,jdbcType=VARCHAR}
+        ORDER BY CURRENT_SEQ DESC) WHERE ROWNUM &lt;= 1) WHERE RN &gt; 0 ) ORDER BY CURRENT_SEQ DESC
+    </select>
+
+    <!-- 新增一条流动服务网点顺序码的记录 -->
+    <insert id="saveMobileServiceSeq" parameterType="com.hgsoft.ygz.vtams.transfer.model.map.MobileServiceSeq">
+        INSERT INTO VTA_MOBILESERVICE_SEQ ( "AGENCY_ID", "CURRENT_SEQ", "LAST_UPDATE_DATE", "CREATION_DATE", "STATUS")
+        VALUES ( #{agencyId,jdbcType=VARCHAR}, #{seq,jdbcType=INTEGER},
+        #{lastUpdateDate,jdbcType=DATE}, #{creationDate,jdbcType=DATE}, #{status,jdbcType=INTEGER})
+    </insert>
+
+    <!-- 获取上一条自助服务终端的顺序码 -->
+    <select id="getLastTerminalSeq" parameterType="com.hgsoft.ygz.vtams.transfer.model.map.TerminalSeq"
+            resultMap="TerminalSeqMap">
+        SELECT * FROM VTA_TERMINAL_SEQ WHERE ROWID IN (SELECT RID FROM (SELECT ROWNUM RN, RID
+        FROM (SELECT ROWID RID FROM VTA_TERMINAL_SEQ
+        where AGENCY_ID=#{agencyId,jdbcType=VARCHAR} and CITY_CODE=#{cityCode,jdbcType=VARCHAR} and DISTRICT_CODE=#{districtCode,jdbcType=VARCHAR}
+        ORDER BY CURRENT_SEQ DESC) WHERE ROWNUM &lt;= 1) WHERE RN &gt; 0 ) ORDER BY CURRENT_SEQ DESC
+    </select>
+
+    <!-- 新增一条自助服务终端顺序码的记录 -->
+    <insert id="saveTerminalSeq" parameterType="com.hgsoft.ygz.vtams.transfer.model.map.TerminalSeq">
+        INSERT INTO VTA_TERMINAL_SEQ ( "AGENCY_ID", "CITY_CODE", "DISTRICT_CODE", "CURRENT_SEQ", "LAST_UPDATE_DATE", "CREATION_DATE", "STATUS")
+        VALUES ( #{agencyId,jdbcType=VARCHAR}, #{cityCode,jdbcType=VARCHAR}, #{districtCode,jdbcType=VARCHAR}, #{seq,jdbcType=INTEGER},
+        #{lastUpdateDate,jdbcType=DATE}, #{creationDate,jdbcType=DATE}, #{status,jdbcType=INTEGER})
+    </insert>
+
+    <!-- 获取上一条线上渠道信息的顺序码 -->
+    <select id="getLastOnlineSeq" parameterType="com.hgsoft.ygz.vtams.transfer.model.map.OnlineSeq"
+            resultMap="OnlineSeqMap">
+        SELECT * FROM VTA_ONLINE_SEQ WHERE ROWID IN (SELECT RID FROM (SELECT ROWNUM RN, RID
+        FROM (SELECT ROWID RID FROM VTA_ONLINE_SEQ
+        where AGENCY_ID=#{agencyId,jdbcType=VARCHAR} and CHANNEL=#{channel,jdbcType=VARCHAR}
+        ORDER BY CURRENT_SEQ DESC) WHERE ROWNUM &lt;= 1) WHERE RN &gt; 0 ) ORDER BY CURRENT_SEQ DESC
+    </select>
+
+    <!-- 新增一条线上渠道信息顺序码的记录 -->
+    <insert id="saveOnlineSeq" parameterType="com.hgsoft.ygz.vtams.transfer.model.map.OnlineSeq">
+        INSERT INTO VTA_ONLINE_SEQ ( "AGENCY_ID", "CHANNEL", "CURRENT_SEQ", "LAST_UPDATE_DATE", "CREATION_DATE", "STATUS")
+        VALUES ( #{agencyId,jdbcType=VARCHAR}, #{channel,jdbcType=VARCHAR}, #{seq,jdbcType=INTEGER},
+        #{lastUpdateDate,jdbcType=DATE}, #{creationDate,jdbcType=DATE}, #{status,jdbcType=INTEGER})
+    </insert>
+
+    <!-- 获取上一条客户信息的顺序码 -->
+    <select id="getLastCustomerSeq" parameterType="com.hgsoft.ygz.vtams.transfer.model.map.CustomerSeq"
+            resultMap="CustomerSeqMap">
+        SELECT * FROM VTA_CUSTOMER_SEQ WHERE ROWID IN (SELECT RID FROM (SELECT ROWNUM RN, RID
+        FROM (SELECT ROWID RID FROM VTA_CUSTOMER_SEQ
+        WHERE ISSUSER_ID=#{issuserId,jdbcType=CHAR} and YEAR_MONTH_DAY=#{yearMonthDay,jdbcType=CHAR}
+        ORDER BY CURRENT_SEQ DESC) WHERE ROWNUM &lt;= 1) WHERE RN &gt; 0 ) ORDER BY CURRENT_SEQ DESC
+    </select>
+
+    <!-- 新增一条客户信息顺序码的记录 -->
+    <insert id="saveCustomerSeq" parameterType="com.hgsoft.ygz.vtams.transfer.model.map.CustomerSeq">
+        INSERT INTO VTA_CUSTOMER_SEQ ( "ISSUSER_ID", "YEAR_MONTH_DAY", "CURRENT_SEQ", "LAST_UPDATE_DATE", "CREATION_DATE", "STATUS")
+        VALUES ( #{issuserId,jdbcType=CHAR}, #{yearMonthDay,jdbcType=CHAR}, #{seq,jdbcType=INTEGER},
+        #{lastUpdateDate,jdbcType=DATE}, #{creationDate,jdbcType=DATE}, #{status,jdbcType=INTEGER})
+    </insert>
+
+    <!-- 获取上一条退款信息的顺序码 -->
+    <select id="getLastRefundSeq" parameterType="com.hgsoft.ygz.vtams.transfer.model.map.RefundSeq"
+            resultMap="RefundSeqMap">
+        SELECT * FROM VTA_REFUND_SEQ WHERE ROWID IN (SELECT RID FROM (SELECT ROWNUM RN, RID
+        FROM (SELECT ROWID RID FROM VTA_REFUND_SEQ
+        WHERE CHANNEL_TYPE=#{channelType,jdbcType=CHAR} and POINT_CODE=#{pointCode,jdbcType=VARCHAR} AND DATE_STR=#{dateStr,jdbcType=CHAR}
+        ORDER BY CURRENT_SEQ DESC) WHERE ROWNUM &lt;= 1) WHERE RN &gt; 0 ) ORDER BY CURRENT_SEQ DESC
+    </select>
+
+    <!-- 新增一条退款信息顺序码的记录 -->
+    <insert id="saveRefundSeq" parameterType="com.hgsoft.ygz.vtams.transfer.model.map.RefundSeq">
+        INSERT INTO VTA_REFUND_SEQ ( "CHANNEL_TYPE", "POINT_CODE", "DATE_STR", "CURRENT_SEQ", "LAST_UPDATE_DATE", "CREATION_DATE", "STATUS")
+        VALUES ( #{channelType,jdbcType=CHAR}, #{pointCode,jdbcType=VARCHAR}, #{dateStr,jdbcType=CHAR}, #{seq,jdbcType=INTEGER},
+        #{lastUpdateDate,jdbcType=DATE}, #{creationDate,jdbcType=DATE}, #{status,jdbcType=INTEGER})
+    </insert>
+
+    <!-- 获取上一条充值信息的顺序码 -->
+    <select id="getLastRechargeSeq" parameterType="com.hgsoft.ygz.vtams.transfer.model.map.RechargeSeq"
+            resultMap="RechargeSeqMap">
+        SELECT * FROM VTA_RECHARGE_SEQ WHERE ROWID IN (SELECT RID FROM (SELECT ROWNUM RN, RID
+        FROM (SELECT ROWID RID FROM VTA_REFUND_SEQ
+        WHERE CHANNEL_TYPE=#{channelType,jdbcType=CHAR} and POINT_CODE=#{pointCode,jdbcType=VARCHAR} AND DATE_STR=#{dateStr,jdbcType=CHAR}
+        ORDER BY CURRENT_SEQ DESC) WHERE ROWNUM &lt;= 1) WHERE RN &gt; 0 ) ORDER BY CURRENT_SEQ DESC
+    </select>
+
+    <!-- 新增一条充值信息顺序码的记录 -->
+    <insert id="saveRechargeSeq" parameterType="com.hgsoft.ygz.vtams.transfer.model.map.RechargeSeq">
+        INSERT INTO VTA_RECHARGE_SEQ ( "CHANNEL_TYPE", "POINT_CODE", "DATE_STR", "CURRENT_SEQ", "LAST_UPDATE_DATE", "CREATION_DATE", "STATUS")
+        VALUES ( #{channelType,jdbcType=CHAR}, #{pointCode,jdbcType=VARCHAR}, #{dateStr,jdbcType=CHAR}, #{seq,jdbcType=INTEGER},
+        #{lastUpdateDate,jdbcType=DATE}, #{creationDate,jdbcType=DATE}, #{status,jdbcType=INTEGER})
+    </insert>
+</mapper>

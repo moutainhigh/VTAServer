@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hgsoft.ygz.vtams.transfer.dao.LogMapper">
+
+    <!-- 保存处理成功的异步消息日志记录 -->
+    <insert id="saveSuccessfulAsyncLog" parameterType="com.hgsoft.ygz.vtams.transfer.model.business.log.AsyncLog">
+        INSERT INTO TB_BUSINESS_ASYNCSUCC_LOG( "ID", "BATCH_NO", "BUSINESS_CONTENT", "BUSINESS_TYPE", "OPERATION",
+        "RECEIVED_TIME", "MAPPING_START_TIME", "MAPPING_END_TIME", "INPUT_STOCK_START_TIME", "INPUT_STOCK_END_TIME", "STATUS_DESC")
+        values ( SEQ_BUSINESS_ASYNCSUCC_LOG.nextval, #{batchNo,jdbcType=BIGINT}, #{businessContent,jdbcType=VARCHAR}, #{businessType,jdbcType=VARCHAR},
+         #{operation,jdbcType=INTEGER}, #{receivedTime,jdbcType=TIMESTAMP}, #{mappingStartTime,jdbcType=TIMESTAMP}, #{mappingEndTime,jdbcType=TIMESTAMP},
+         #{inputStockStartTime,jdbcType=TIMESTAMP},#{inputStockEndTime,jdbcType=TIMESTAMP}, #{statusDesc,jdbcType=VARCHAR})
+    </insert>
+
+    <!-- 批量保存处理成功的异步消息日志记录 -->
+    <insert id="batchSaveSuccessfulAsyncLog" parameterType="list">
+        INSERT INTO TB_BUSINESS_ASYNCSUCC_LOG( "ID", "BATCH_NO", "BUSINESS_CONTENT", "BUSINESS_TYPE",
+        "OPERATION","RECEIVED_TIME", "MAPPING_START_TIME", "MAPPING_END_TIME", "INPUT_STOCK_START_TIME",
+        "INPUT_STOCK_END_TIME","STATUS_DESC")
+        SELECT SEQ_BUSINESS_ASYNCSUCC_LOG.nextval,A.* FROM (
+        <foreach collection="list" item="log" separator="UNION ALL">
+            SELECT #{log.batchNo,jdbcType=BIGINT},#{log.businessContent,jdbcType=VARCHAR},
+            #{log.businessType,jdbcType=VARCHAR},#{log.operation,jdbcType=INTEGER},
+            #{log.receivedTime,jdbcType=TIMESTAMP},#{log.mappingStartTime,jdbcType=TIMESTAMP},
+            #{log.mappingEndTime,jdbcType=TIMESTAMP},#{log.inputStockStartTime,jdbcType=TIMESTAMP},
+            #{log.inputStockEndTime,jdbcType=TIMESTAMP},#{log.statusDesc,jdbcType=VARCHAR}
+            FROM dual
+        </foreach>
+        )A
+    </insert>
+
+
+    <!-- 保存处理失败的异步消息日志记录 -->
+    <insert id="saveFailedAsyncLog" parameterType="com.hgsoft.ygz.vtams.transfer.exception.AsyncException">
+        INSERT INTO TB_BUSINESS_ASYNCFAIL_LOG( "ID", "BATCH_NO", "BUSINESS_CONTENT", "BUSINESS_TYPE", "OPERATION",
+        "RECEIVED_TIME", "MAPPING_START_TIME", "MAPPING_END_TIME", "INPUT_STOCK_START_TIME", "INPUT_STOCK_END_TIME", "STATUS_DESC")
+        VALUES ( SEQ_BUSINESS_ASYNCFAIL_LOG.nextval, #{batchNo,jdbcType=BIGINT}, #{businessContent,jdbcType=VARCHAR}, #{businessType,jdbcType=VARCHAR},
+         #{operation,jdbcType=INTEGER}, #{receivedTime,jdbcType=TIMESTAMP}, #{mappingStartTime,jdbcType=TIMESTAMP}, #{mappingEndTime,jdbcType=TIMESTAMP},
+         #{inputStockStartTime,jdbcType=TIMESTAMP},#{inputStockEndTime,jdbcType=TIMESTAMP}, #{statusDesc,jdbcType=VARCHAR})
+    </insert>
+
+    <!-- 保存处理成功的同步消息日志记录 -->
+    <insert id="saveSuccessfulSyncLog" parameterType="com.hgsoft.ygz.vtams.transfer.model.business.log.SyncLog">
+        INSERT INTO TB_BUSINESS_SYNCSUCC_LOG( "ID", "BATCH_NO", "BUSINESS_CONTENT", "BUSINESS_TYPE", "OPERATION", "RECEIVED_TIME",
+         "MAPPING_START_TIME", "MAPPING_END_TIME", "REQ_FILEAME", "REQ_JSONSTR", "REQ_FILEMD5", "REQ_TIME", "RESP_CORE", "RESP_CONTENT",
+          "RETRY_TIMES", "RESP_TIME", "STATUS_DESC")
+          values ( SEQ_BUSINESS_SYNCSUCC_LOG.nextval, #{batchNo,jdbcType=BIGINT}, #{businessContent,jdbcType=VARCHAR}, #{businessType,jdbcType=VARCHAR},
+           #{operation,jdbcType=INTEGER}, #{receivedTime,jdbcType=TIMESTAMP}, #{mappingStartTime,jdbcType=TIMESTAMP}, #{mappingEndTime,jdbcType=TIMESTAMP},
+            #{reqFileName,jdbcType=VARCHAR}, #{reqJsonStr,jdbcType=VARCHAR}, #{reqFileMd5,jdbcType=VARCHAR}, #{requestTime,jdbcType=TIMESTAMP},
+            #{responseCode,jdbcType=INTEGER}, #{responseContent,jdbcType=VARCHAR}, #{retryTimes,jdbcType=INTEGER}, #{responseTime,jdbcType=TIMESTAMP}, #{statusDesc,jdbcType=VARCHAR})
+    </insert>
+
+    <!-- 批量保存处理成功的同步消息日志记录 -->
+    <insert id="batchSaveSuccessfulSyncLog" parameterType="list">
+        INSERT INTO TB_BUSINESS_SYNCSUCC_LOG( "ID", "BATCH_NO", "BUSINESS_CONTENT", "BUSINESS_TYPE", "OPERATION",
+        "RECEIVED_TIME","MAPPING_START_TIME", "MAPPING_END_TIME", "REQ_FILEAME", "REQ_JSONSTR", "REQ_FILEMD5",
+        "REQ_TIME","RESP_CORE", "RESP_CONTENT","RETRY_TIMES", "RESP_TIME", "STATUS_DESC")
+        SELECT SEQ_BUSINESS_SYNCSUCC_LOG.nextval,A.* FROM (
+        <foreach collection="list" item="log" separator="UNION ALL">
+            SELECT #{log.batchNo,jdbcType=BIGINT},#{log.businessContent,jdbcType=VARCHAR},
+            #{log.businessType,jdbcType=VARCHAR},#{log.operation,jdbcType=INTEGER},
+            #{log.receivedTime,jdbcType=TIMESTAMP},#{log.mappingStartTime,jdbcType=TIMESTAMP},
+            #{log.mappingEndTime,jdbcType=TIMESTAMP},#{log.reqFileName,jdbcType=VARCHAR},
+            #{log.reqJsonStr,jdbcType=VARCHAR}, #{log.reqFileMd5,jdbcType=VARCHAR},
+            #{log.requestTime,jdbcType=TIMESTAMP},#{log.responseCode,jdbcType=INTEGER},
+            #{log.responseContent,jdbcType=VARCHAR},#{log.retryTimes,jdbcType=INTEGER},
+            #{log.responseTime,jdbcType=TIMESTAMP},#{log.statusDesc,jdbcType=VARCHAR}
+            FROM dual
+        </foreach>
+        )A
+    </insert>
+
+    <!-- 保存处理失败的同步消息日志记录 -->
+    <insert id="saveFailedSyncLog" parameterType="com.hgsoft.ygz.vtams.transfer.exception.SyncException">
+        INSERT INTO TB_BUSINESS_SYNCFAIL_LOG( "ID", "BATCH_NO", "BUSINESS_CONTENT", "BUSINESS_TYPE", "OPERATION", "RECEIVED_TIME",
+         "MAPPING_START_TIME", "MAPPING_END_TIME", "REQ_FILEAME", "REQ_JSONSTR", "REQ_FILEMD5", "REQ_TIME", "RESP_CORE", "RESP_CONTENT",
+          "RETRY_TIMES", "RESP_TIME", "STATUS_DESC")
+          values ( SEQ_BUSINESS_SYNCFAIL_LOG.nextval, #{batchNo,jdbcType=BIGINT}, #{businessContent,jdbcType=VARCHAR}, #{businessType,jdbcType=VARCHAR},
+           #{operation,jdbcType=INTEGER}, #{receivedTime,jdbcType=TIMESTAMP}, #{mappingStartTime,jdbcType=TIMESTAMP}, #{mappingEndTime,jdbcType=TIMESTAMP},
+            #{reqFileName,jdbcType=VARCHAR}, #{reqJsonStr,jdbcType=VARCHAR}, #{reqFileMd5,jdbcType=VARCHAR}, #{requestTime,jdbcType=TIMESTAMP},
+            #{responseCode,jdbcType=INTEGER}, #{responseContent,jdbcType=VARCHAR}, #{retryTimes,jdbcType=INTEGER}, #{responseTime,jdbcType=TIMESTAMP}, #{statusDesc,jdbcType=VARCHAR})
+    </insert>
+
+    <!-- 批量保存处理失败的同步消息日志记录 -->
+    <insert id="batchSaveFailedSyncLog" parameterType="com.hgsoft.ygz.vtams.transfer.exception.SyncException">
+        INSERT INTO TB_BUSINESS_SYNCFAIL_LOG( "ID", "BATCH_NO", "BUSINESS_CONTENT", "BUSINESS_TYPE", "OPERATION",
+        "RECEIVED_TIME","MAPPING_START_TIME", "MAPPING_END_TIME", "REQ_FILEAME", "REQ_JSONSTR", "REQ_FILEMD5",
+        "REQ_TIME", "RESP_CORE","RESP_CONTENT","RETRY_TIMES", "RESP_TIME", "STATUS_DESC")
+        SELECT SEQ_BUSINESS_SYNCFAIL_LOG.nextval,A.* FROM (
+        <foreach collection="list" item="log" separator="UNION ALL">
+            SELECT #{log.batchNo,jdbcType=BIGINT}, #{log.businessContent,jdbcType=VARCHAR},
+            #{log.businessType,jdbcType=VARCHAR},#{log.operation,jdbcType=INTEGER},
+            #{log.receivedTime,jdbcType=TIMESTAMP}, #{log.mappingStartTime,jdbcType=TIMESTAMP},
+            #{log.mappingEndTime,jdbcType=TIMESTAMP},#{log.reqFileName,jdbcType=VARCHAR},
+            #{log.reqJsonStr,jdbcType=VARCHAR}, #{log.reqFileMd5,jdbcType=VARCHAR},
+            #{log.requestTime,jdbcType=TIMESTAMP},#{log.responseCode,jdbcType=INTEGER},
+            #{log.responseContent,jdbcType=VARCHAR}, #{log.retryTimes,jdbcType=INTEGER},
+            #{log.responseTime,jdbcType=TIMESTAMP}, #{log.statusDesc,jdbcType=VARCHAR}
+            FROM dual
+        </foreach>
+        )A
+    </insert>
+
+    <!-- 保存非业务性异常 -->
+    <insert id="saveNotBusinessException" parameterType="com.hgsoft.ygz.vtams.transfer.exception.NotBusinessException">
+        INSERT INTO TB_BUSINESS_LOG( "ID", "BATCH_NO", "BUSINESS_CONTENT", "BUSINESS_TYPE", "OPERATION", "RECEIVED_TIME", "STATUS_DESC")
+        values ( SEQ_BUSINESS_LOG.nextval, #{batchNo,jdbcType=BIGINT}, #{businessContent,jdbcType=VARCHAR}, #{businessType,jdbcType=VARCHAR},
+        #{operation,jdbcType=INTEGER}, #{receivedTime,jdbcType=TIMESTAMP}, #{statusDesc,jdbcType=VARCHAR})
+    </insert>
+
+    <!-- 批量保存非业务性异常 -->
+    <insert id="batchSaveNotBusinessException"
+            parameterType="com.hgsoft.ygz.vtams.transfer.exception.NotBusinessException">
+        INSERT INTO TB_BUSINESS_LOG( "ID", "BATCH_NO", "BUSINESS_CONTENT", "BUSINESS_TYPE", "OPERATION",
+        "RECEIVED_TIME", "STATUS_DESC")
+        SELECT SEQ_BUSINESS_LOG.nextval,A.* FROM (
+        <foreach collection="list" item="log" separator="UNION ALL">
+            SELECT #{log.batchNo,jdbcType=BIGINT}, #{log.businessContent,jdbcType=VARCHAR},
+            #{log.businessType,jdbcType=VARCHAR},#{log.operation,jdbcType=INTEGER},
+            #{log.receivedTime,jdbcType=TIMESTAMP}, #{log.statusDesc,jdbcType=VARCHAR}
+            FROM dual
+        </foreach>
+        )A
+    </insert>
+</mapper>

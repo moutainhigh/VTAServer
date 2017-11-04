@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache updateCheck="false" name="defaultCache">
+
+    <!--<diskStore path="java.io.tmpdir/webapp/shiro"/>-->
+    <diskStore path="${diskStorePath}"/>
+
+    <!-- 默认缓存配置. 自动失效：最后一次访问时间间隔300秒失效，若没有访问过自创建时间600秒失效。-->
+    <defaultCache maxEntriesLocalHeap="1000" eternal="false" timeToIdleSeconds="300" timeToLiveSeconds="600"
+                  overflowToDisk="true" statistics="true"/>
+
+    <!-- 系统缓存 -->
+    <cache name="sysCache" maxEntriesLocalHeap="1000" eternal="true" overflowToDisk="true" statistics="true"/>
+    <cache name="sidebar" maxEntriesLocalHeap="1000" eternal="true" overflowToDisk="true" statistics="true"/>
+    <cache name="route" maxEntriesLocalHeap="1000" eternal="true" overflowToDisk="true" statistics="true"/>
+
+    <!-- 登录记录缓存 锁定10分钟 -->
+    <cache name="passwordRetryCache" timeToIdleSeconds="600" timeToLiveSeconds="0"
+           maxEntriesLocalHeap="100" eternal="false" overflowToDisk="false" statistics="true"/>
+
+    <cache name="authorizationCache"
+           maxEntriesLocalHeap="10000" eternal="true" overflowToDisk="true"
+           diskPersistent="true" diskExpiryThreadIntervalSeconds="600"
+           statistics="true"/>
+
+    <cache name="authenticationCache"
+           maxEntriesLocalHeap="10000" eternal="true" overflowToDisk="true"
+           diskPersistent="true" diskExpiryThreadIntervalSeconds="600"
+           statistics="true"/>
+
+    <cache name="shiro-activeSessionCache"
+           maxEntriesLocalHeap="10000" eternal="true" overflowToDisk="true"
+           diskPersistent="true" diskExpiryThreadIntervalSeconds="600"
+           statistics="true"/>
+
+    <!-- 以下为业务相关 -->
+    <cache name="point_mapping_cache" maxEntriesLocalHeap="30000" eternal="true" overflowToDisk="true"
+           statistics="true"/>
+
+</ehcache>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hgsoft.ygz.vtams.transfer.dao.BusinessReqMapper">
+
+    <!-- 表字段与Model属性映射-->
+    <resultMap type="com.hgsoft.ygz.vtams.transfer.model.business.BusinessReq" id="BusinessReqMap">
+        <id property="id" column="ID"/>
+        <result property="businessContent" column="BUSINESS_CONTENT"/>
+        <result property="businessType" column="BUSINESS_TYPE"/>
+        <result property="operation" column="OPERATION"/>
+        <result property="createTime" column="CREATE_TIME"/>
+    </resultMap>
+
+    <!-- 查找实时表中指定区间信息 -->
+    <select id="findSyncMsg" resultMap="BusinessReqMap">
+        SELECT * FROM TB_BUSINESS_REALTIME_REQ WHERE ROWID IN
+            (SELECT RID FROM (SELECT ROWNUM RN, RID
+                 FROM (SELECT ROWID RID, CREATE_TIME FROM TB_BUSINESS_REALTIME_REQ ORDER BY CREATE_TIME ASC)
+                  WHERE ROWNUM &lt;= ( #{end,jdbcType=INTEGER} )) WHERE RN &gt; (#{start,jdbcType=INTEGER}) )
+        ORDER BY CREATE_TIME ASC
+    </select>
+
+
+    <!-- 查找非实时表中指定区间的信息 -->
+    <select id="findAsyncMsg" resultMap="BusinessReqMap">
+        SELECT * FROM TB_BUSINESS_NONREALTIME_REQ WHERE ROWID IN
+        (SELECT RID FROM (SELECT ROWNUM RN, RID
+        FROM (SELECT ROWID RID, CREATE_TIME FROM TB_BUSINESS_NONREALTIME_REQ ORDER BY CREATE_TIME ASC)
+        WHERE ROWNUM &lt;= ( #{end,jdbcType=INTEGER} )) WHERE RN &gt; (#{start,jdbcType=INTEGER}) )
+        ORDER BY CREATE_TIME ASC
+    </select>
+
+    <!-- 根据id删除指定的异步消息 -->
+    <delete id="removeAsyncBusinessReqByPrimaryKey" parameterType="long">
+        DELETE FROM TB_BUSINESS_NONREALTIME_REQ WHERE ID=#{id}
+    </delete>
+
+    <!-- 根据主键列表，批量删除异步信息 -->
+    <delete id="batchRemoveAsyncBusinessReqByPrimaryKey" parameterType="list">
+        DELETE FROM TB_BUSINESS_NONREALTIME_REQ WHERE ID IN
+        <foreach collection="list" item="id" open="(" separator="," close=")">
+          #{id}
+        </foreach>
+    </delete>
+
+    <!-- 根据id删除指定的同步消息 -->
+    <delete id="removeSyncBusinessReqByPrimaryKey" parameterType="long">
+        DELETE FROM TB_BUSINESS_REALTIME_REQ WHERE ID=#{id}
+    </delete>
+
+    <!-- 根据主键列表，批量删除同步信息 -->
+    <delete id="batchRemoveSyncBusinessReqByPrimaryKey" parameterType="list">
+        DELETE FROM TB_BUSINESS_REALTIME_REQ WHERE ID IN
+        <foreach collection="list" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

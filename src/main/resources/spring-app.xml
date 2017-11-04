@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!-- 数据库脚本执行工具 -->
+    <bean class="com.hgsoft.yfzx.webapp.util.CustomFlyway" init-method="init" depends-on="flyway">
+        <property name="flyway">
+            <bean class="org.flywaydb.core.Flyway">
+                <property name="dataSource" ref="dataSource"/>
+                <property name="baselineOnMigrate" value="true"/>
+                <property name="table" value="schema_version"/>
+                <property name="locations" value="db/${webapp_web_dbType:''}"/>
+            </bean>
+        </property>
+    </bean>
+
+    <!-- jackson objectMapper -->
+    <bean id="objectMapper" class="com.hgsoft.ygz.vtams.transfer.util.ObjectMapperFactory"/>
+
+    <!-- 加载springContextUtil，该工具类用于手动获取bean -->
+    <bean id="springContextUtil" class="com.hgsoft.ygz.vtams.transfer.util.SpringContextUtil"/>
+
+    <!-- http连接池 -->
+    <bean id="communicationUtil" class="com.hgsoft.ygz.vtams.transfer.util.CommunicationUtil">
+        <!-- 连接池最大连接数 -->
+        <property name="maxTotal" value="200"/>
+        <!-- 单路由默认最大连接数 -->
+        <property name="defaultPerRoute" value="200"/>
+        <!-- 从连接池获取连接的超时时间，单位毫秒 -->
+        <property name="connectionRequestTimeout" value="-1"/>
+        <!-- 通过一个异步线程去创建与服务器的socket连接时的超时时间,单位毫秒 -->
+        <property name="connectTimeout" value="-1"/>
+        <!-- socket读数据的超时时间,单位毫秒 -->
+        <property name="socketTimeout" value="-1"/>
+    </bean>
+
+
+    <!-- 线程池 -->
+    <bean id="rejectedHandler" class="com.hgsoft.ygz.vtams.transfer.component.task.RejectedHandler"/>
+
+    <bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+        <!-- 核心线程数 -->
+        <property name="corePoolSize" value="5"/>
+        <!-- 最大线程数 -->
+        <property name="maxPoolSize" value="250"/>
+        <!-- 队列最大长度 -->
+        <property name="queueCapacity" value="1000"/>
+        <!-- 空闲线程的存活时间，默认为60s -->
+        <property name="keepAliveSeconds" value="120"/>
+        <property name="rejectedExecutionHandler" ref="rejectedHandler"/>
+    </bean>
+
+</beans>

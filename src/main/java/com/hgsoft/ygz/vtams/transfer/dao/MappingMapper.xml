@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hgsoft.ygz.vtams.transfer.dao.MappingMapper">
+
+    <!-- 表字段与Model属性映射-->
+    <resultMap type="com.hgsoft.ygz.vtams.transfer.model.map.PointMapping" id="PointMappingMap">
+        <result property="oldPointCode" column="OLD_POINT_CODE"/>
+        <result property="newPointCode" column="NEW_POINT_CODE"/>
+        <result property="channelType" column="CHANNEL_TYPE"/>
+        <result property="agencyId" column="AGENCY_ID"/>
+        <result property="status" column="STATUS"/>
+        <result property="creationDate" column="CREATION_DATE"/>
+    </resultMap>
+
+    <!-- 表字段与Model属性映射-->
+    <resultMap type="com.hgsoft.ygz.vtams.transfer.model.map.CustomerMapping" id="CustomerMappingMap">
+        <result property="oldUserNo" column="OLD_USER_NO"/>
+        <result property="newUserNo" column="NEW_USER_NO"/>
+        <result property="status" column="STATUS"/>
+        <result property="creationDate" column="CREATION_DATE"/>
+    </resultMap>
+
+    <!-- 表字段与Model属性映射-->
+    <resultMap type="com.hgsoft.ygz.vtams.transfer.model.map.RechargeMapping" id="RechargeMappingMap">
+        <result property="oldRechargeId" column="OLD_RECHARGE_ID"/>
+        <result property="newRechargeId" column="NEW_RECHARGE_ID"/>
+        <result property="status" column="STATUS"/>
+        <result property="creationDate" column="CREATION_DATE"/>
+    </resultMap>
+
+    <!-- 保存网点映射信息 -->
+    <insert id="savePointMapping" parameterType="com.hgsoft.ygz.vtams.transfer.model.map.PointMapping">
+      INSERT INTO VTA_POINT_MAP ( "OLD_POINT_CODE", "NEW_POINT_CODE", "CHANNEL_TYPE", "AGENCY_ID", "STATUS", "CREATION_DATE")
+      VALUES ( #{oldPointCode,jdbcType=VARCHAR}, #{newPointCode,jdbcType=VARCHAR}, #{channelType,jdbcType=CHAR}, #{agencyId,jdbcType=CHAR},
+       #{status,jdbcType=INTEGER}, #{creationDate,jdbcType=DATE})
+    </insert>
+
+    <!-- 获取网点映射信息 -->
+    <select id="getPointMapping" resultMap="PointMappingMap" parameterType="string">
+        SELECT * FROM VTA_POINT_MAP WHERE OLD_POINT_CODE=#{oldPointCode,jdbcType=VARCHAR}
+    </select>
+
+    <!-- 保存客户映射信息 -->
+    <insert id="saveCustomerMapping" parameterType="com.hgsoft.ygz.vtams.transfer.model.map.CustomerMapping">
+        INSERT INTO VTA_CUSTOMER_MAP ( "OLD_USER_NO", "NEW_USER_NO", "STATUS", "CREATION_DATE")
+        VALUES ( #{oldUserNo,jdbcType=CHAR}, #{newUserNo,jdbcType=CHAR},#{status,jdbcType=INTEGER}, #{creationDate,jdbcType=DATE})
+    </insert>
+
+    <!-- 获取客户映射信息 -->
+    <select id="getCustomerMapping" resultMap="CustomerMappingMap" parameterType="string">
+        SELECT * FROM VTA_CUSTOMER_MAP WHERE OLD_USER_NO=#{oldUserNo,jdbcType=CHAR}
+    </select>
+
+    <!-- 保存充值交易映射信息 -->
+    <insert id="saveRechargeMapping" parameterType="com.hgsoft.ygz.vtams.transfer.model.map.RechargeMapping">
+        INSERT INTO VTA_RECHARGE_MAP ( "OLD_RECHARGE_ID", "NEW_RECHARGE_ID", "STATUS", "CREATION_DATE")
+        VALUES ( #{oldRechargeId,jdbcType=VARCHAR}, #{newRechargeId,jdbcType=VARCHAR},#{status,jdbcType=INTEGER}, #{creationDate,jdbcType=DATE})
+    </insert>
+
+    <!-- 获取充值交易映射信息 -->
+    <select id="getRechargeMapping" resultMap="CustomerMappingMap" parameterType="string">
+        SELECT * FROM VTA_RECHARGE_MAP WHERE OLD_RECHARGE_ID=#{oldRechargeId,jdbcType=VARCHAR}
+    </select>
+
+</mapper>

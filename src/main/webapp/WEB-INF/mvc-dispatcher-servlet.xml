@@ -1,0 +1,94 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!-- 启用自动注入注解 -->
+    <context:annotation-config/>
+
+    <context:component-scan base-package="com.hgsoft.yfzx.*.*.*.controller"/>
+
+    <!-- 启动对@Aspect注解的支持 -->
+    <aop:aspectj-autoproxy/>
+
+    <!--通知spring使用cglib而不是jdk的来生成代理方法 AOP可以拦截到Controller-->
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+
+    <!--此处需要扫描quartz的controller-->
+    <!--<context:component-scan base-package="com.hgsoft.yfzx.quartz.action"/>-->
+    <!--<context:component-scan base-package="com.hgsoft.yfzx.webapp.*.web.controller" use-default-filters="false">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+        <context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+        &lt;!&ndash;shiro注解&ndash;&gt;
+        <context:include-filter type="annotation" expression="org.apache.shiro.authz.annotation.RequiresAuthentication"/>
+        <context:include-filter type="annotation" expression="org.apache.shiro.authz.annotation.RequiresRoles"/>
+        <context:include-filter type="annotation" expression="org.apache.shiro.authz.annotation.RequiresPermissions"/>
+        <context:include-filter type="annotation" expression="org.apache.shiro.authz.annotation.RequiresGuest"/>
+        <context:include-filter type="annotation" expression="org.apache.shiro.authz.annotation.RequiresUser"/>
+    </context:component-scan>-->
+
+    <!--<mvc:view-controller path="/assets/index.html" view-name="dashboard"/>-->
+    <mvc:view-controller path="/" view-name="redirect:/assets/login.html"/>
+
+    <!-- 容器默认的DefaultServletHandler处理 所有静态内容与无RequestMapping处理的URL-->
+    <mvc:default-servlet-handler/>
+
+    <!--<mvc:annotation-driven content-negotiation-manager="contentNegotiationManager">-->
+    <mvc:annotation-driven>
+        <mvc:message-converters register-defaults="true">
+            <!-- 将StringHttpMessageConverter的默认编码设为UTF-8 -->
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <constructor-arg value="UTF-8"/>
+            </bean>
+            <!-- 将Jackson2HttpMessageConverter的默认格式化输出设为true -->
+            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>application/json;charset=UTF-8</value>
+                    </list>
+                </property>
+                <property name="prettyPrint" value="true"/>
+                <property name="objectMapper">
+                    <bean class="com.hgsoft.yfzx.webapp.util.JsonMapper"/>
+                </property>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
+    <!-- REST中根据URL后缀自动判定Content-Type及相应的View -->
+    <!--<bean id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+        <property name="favorPathExtension" value="true" />
+        &lt;!&ndash;<property name="favorParameter" value="true" />
+        <property name="parameterName" value="mediaType" />&ndash;&gt;
+        <property name="ignoreAcceptHeader" value="true"/>
+        <property name="useJaf" value="false"/>
+        <property name="defaultContentType" value="application/json" />
+        <property name="mediaTypes" >
+            <map>
+                <entry key="json" value="application/json" />
+                <entry key="xml" value="application/xml" />
+                <entry key="html" value="text/html" />
+            </map>
+        </property>
+    </bean>-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+        <property name="prefix" value="/WEB-INF/pages/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="defaultEncoding" value="utf-8"/>
+        <property name="maxUploadSize" value="32505856"/><!-- 上传文件大小限制为31M，31*1024*1024 -->
+        <property name="maxInMemorySize" value="4096"/>
+    </bean>
+
+    <mvc:resources mapping="/assets/**" location="/assets/"/>
+
+    <!--登出controller-->
+    <bean class="com.hgsoft.yfzx.webapp.util.LogoutController"/>
+</beans>

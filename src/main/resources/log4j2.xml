@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration monitorInterval="30">
+    <!-- 变量配置 -->
+    <Properties>
+        <!--<Property name="LOG_HOME">../log/VTAMsgServer</Property>-->
+        <Property name="LOG_HOME">${sys:catalina.home}/log/VTAMsgServer</Property>
+        <Property name="logPattern">%X{userId} %d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %class{36} %L %M - %msg%xEx%n
+        </Property>
+    </Properties>
+    <appenders>
+        <!-- 控制台输出-->
+        <Console name="Console" target="SYSTEM_OUT">
+            <!-- 控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch） -->
+            <!--<ThresholdFilter level="trace" onMatch="ACCEPT" onMismatch="DENY"/>-->
+            <PatternLayout>
+                <pattern>${logPattern}</pattern>
+            </PatternLayout>
+        </Console>
+
+        <!-- 总控文件，包含所有的输出 -->
+        <RollingFile name="MainFile" fileName="${LOG_HOME}/app.log"
+                     filePattern="${LOG_HOME}/%d{yyyy-MM}/%d{yyyy-MM-dd}.log">
+            <PatternLayout>
+                <pattern>${logPattern}</pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <!--<SizeBasedTriggeringPolicy size="20MB"/>-->
+            </Policies>
+            <!--fileIndex有两个值max和min。 max时，最新文件会保存在需要最大的文件中，min相反-->
+            <!--<DefaultRolloverStrategy max="20" fileIndex="max"/>-->
+        </RollingFile>
+
+        <!-- quartz 日志输出 -->
+        <RollingFile name="QuartzFile" fileName="${LOG_HOME}/quartz.log"
+                     filePattern="${LOG_HOME}/%d{yyyy-MM}/quartz/%d{yyyy-MM-dd}-quartz.log">
+            <PatternLayout>
+                <pattern>${logPattern}</pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <!--<SizeBasedTriggeringPolicy size="20MB"/>-->
+            </Policies>
+            <!--fileIndex有两个值max和min。 max时，最新文件会保存在需要最大的文件中，min相反-->
+            <!--<DefaultRolloverStrategy max="20" fileIndex="max"/>-->
+        </RollingFile>
+        <!-- 监控日志 -->
+        <RollingFile name="MonitorFile" fileName="${LOG_HOME}/monitor.log"
+                     filePattern="${LOG_HOME}/%d{yyyy-MM}/monitor/%d{yyyy-MM-dd}-monitor.log">
+            <PatternLayout>
+                <pattern>${logPattern}</pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+            </Policies>
+        </RollingFile>
+    </appenders>
+
+    <loggers>
+        <!--spring-->
+        <logger name="org.springframework" level="WARN"/>
+        <logger name="org.springframework.scheduling" level="WARN"/>
+
+        <logger name="com.opensymphony" level="WARN"/>
+        <logger name="org.apache" level="WARN"/>
+        <logger name="com.mchange.v2" level="WARN"/>
+        <logger name="net.sf.ehcache" level="WARN"/>
+        <logger name="net.sf.jxls" level="WARN"/>
+        <logger name="com.alibaba" level="WARN"/>
+        <logger name="org.mybatis.spring" level="WARN"/>
+
+        <!--com.hgsoft.yfzx.webapp-->
+        <logger name="com.hgsoft.yfzx.webapp" level="DEBUG"/>
+        <logger name="com.hgsoft.yfzx.webapp.util.DispatcherServletHandler" level="WARN"/>
+        <logger name="com.hgsoft.yfzx.common.file.FileUtil" level="WARN"/>
+
+        <!--hibernate-->
+        <logger name="org.hibernate" level="WARN"/>
+        <!-- show parameters for hibernate sql 专为 Hibernate 定制 -->
+        <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="debug"/>
+        <logger name="org.hibernate.SQL" level="DEBUG"/>
+        <logger name="org.hibernate.engine.QueryParameters" level="DEBUG"/>
+        <logger name="org.hibernate.engine.query.HQLQueryPlan" level="DEBUG"/>
+
+        <!--quartz-->
+        <logger name="org.quartz" level="WARN" additivity="false">
+            <appender-ref ref="Console"/>
+            <appender-ref ref="QuartzFile"/>
+        </logger>
+        <logger name="org.quartz.core.QuartzScheduler" level="DEBUG" additivity="false">
+            <appender-ref ref="Console"/>
+            <appender-ref ref="QuartzFile"/>
+        </logger>
+        <logger name="org.springframework.scheduling.quartz" level="WARN" additivity="false">
+            <appender-ref ref="Console"/>
+            <appender-ref ref="QuartzFile"/>
+        </logger>
+        <logger name="com.hgsoft.yfzx.plugin.quartz" level="DEBUG" additivity="false">
+            <appender-ref ref="Console"/>
+            <appender-ref ref="QuartzFile"/>
+        </logger>
+
+        <logger name="org.apache.camel" level="WARN" additivity="false">
+            <appender-ref ref="Console"/>
+        </logger>
+
+
+        <!-- 基础框架信息打印 -->
+        <logger name="com.hgsoft.yfzx.plugin.dataSync" level="DEBUG" additivity="false">
+            <appender-ref ref="Console"/>
+        </logger>
+
+        <!-- 基础框架监控信息 -->
+        <logger name="com.hgsoft.yfzx.webapp.util.PerformanceMonitor" level="DEBUG" additivity="false">
+            <appender-ref ref="Console"/>
+            <appender-ref ref="MainFile"/>
+            <appender-ref ref="MonitorFile"/>
+        </logger>
+
+        <!--performance-->
+        <logger name="org.springaround.log" level="DEBUG" additivity="true">
+            <appender-ref ref="Console"/>
+        </logger>
+
+        <!-- project -->
+        <logger name="com.hgsoft.ygz.vtams.transfer" level="DEBUG"/>
+
+        <!--root-->
+        <root level="DEBUG">
+            <appender-ref ref="Console"/>
+            <appender-ref ref="MainFile"/>
+        </root>
+    </loggers>
+</configuration>

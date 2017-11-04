@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hgsoft.ygz.vtams.transfer.dao.InputStockMapper">
+
+    <!-- 保存用户卡黑名单记录 -->
+    <insert id="saveCardBlack" parameterType="com.hgsoft.ygz.vtams.transfer.model.CardBlack">
+        INSERT INTO TB_CARDBLACKLISTUPLOAD("ISSUERID","CREATIONTIME","TYPE","CARDID","STATUS")
+        VALUES(#{issuerId,jdbcType=CHAR},#{creationTime,jdbcType=VARCHAR},
+        #{type,jdbcType=INTEGER},#{cardId,jdbcType=CHAR},#{status,jdbcType=INTEGER})
+    </insert>
+
+    <!-- 保存客服合作机构记录 -->
+    <insert id="saveAgency" parameterType="com.hgsoft.ygz.vtams.transfer.model.Agency">
+        insert into TB_AGENCYUPLOAD( "ID", "NAME", "CONTACT", "TEL", "STARTTIME", "ENDTIME", "OPERATION")
+        values ( #{id,jdbcType=CHAR}, #{name,jdbcType=VARCHAR}, #{contact,jdbcType=VARCHAR}, #{tel,jdbcType=VARCHAR},
+        #{startTime,jdbcType=VARCHAR}, #{endTime,jdbcType=VARCHAR},#{operation,jdbcType=INTEGER})
+    </insert>
+
+    <!-- 保存服务网点信息记录 -->
+    <insert id="saveHall" parameterType="com.hgsoft.ygz.vtams.transfer.model.Hall">
+        INSERT INTO TB_HALLUPLOAD ( "ID", "NAME", "CONTACT", "TEL", "ADDRESS", "SERVICEITEMS", "BUSINESSHOURS", "STARTTIME", "ENDTIME", "OPERATION")
+        VALUES ( #{id,jdbcType=CHAR}, #{name,jdbcType=VARCHAR},#{contact,jdbcType=VARCHAR},
+        #{tel,jdbcType=VARCHAR},#{address,jdbcType=VARCHAR},#{serviceItems,jdbcType=VARCHAR},#{businessHours,jdbcType=VARCHAR},
+        #{startTime,jdbcType=VARCHAR},#{endTime,jdbcType=VARCHAR},#{operation,jdbcType=INTEGER})
+    </insert>
+
+    <!-- 保存流动服务网点信息记录 -->
+    <insert id="saveMobileNet" parameterType="com.hgsoft.ygz.vtams.transfer.model.MobileNet">
+        INSERT INTO TB_MOBILESERVICEUPLAOD ( "ID", "STARTTIME", "ENDTIME", "OPERATION")
+        VALUES ( #{id,jdbcType=CHAR},#{startTime,jdbcType=VARCHAR},#{endTime,jdbcType=VARCHAR},#{operation,jdbcType=INTEGER})
+    </insert>
+
+    <!-- 保存自助服务终端信息记录 -->
+    <insert id="saveTerminal" parameterType="com.hgsoft.ygz.vtams.transfer.model.Terminal">
+        INSERT INTO TB_TERMINALUPLOAD ( "ID", "ADDRESS", "SERVICEITEMS", "BUSINESSHOURS", "STARTTIME", "ENDTIME", "OPERATION")
+        VALUES ( #{id,jdbcType=CHAR}, #{address,jdbcType=VARCHAR},#{serviceItems,jdbcType=VARCHAR},#{businessHours,jdbcType=VARCHAR},
+        #{startTime,jdbcType=VARCHAR},#{endTime,jdbcType=VARCHAR},#{operation,jdbcType=INTEGER})
+    </insert>
+
+    <!-- 保存线上服务渠道信息记录 -->
+    <insert id="saveOnline" parameterType="com.hgsoft.ygz.vtams.transfer.model.Online">
+        INSERT INTO TB_ONLINEUPLOAD ( "ID", "NAME", "SERVICEITEMS", "STARTTIME", "ENDTIME", "OPERATION")
+        VALUES ( #{id,jdbcType=CHAR}, #{name,jdbcType=VARCHAR},#{serviceItems,jdbcType=VARCHAR},
+        #{startTime,jdbcType=VARCHAR},#{endTime,jdbcType=VARCHAR},#{operation,jdbcType=INTEGER})
+    </insert>
+
+    <!-- 保存发行方信息记录 -->
+    <insert id="saveIssuer" parameterType="com.hgsoft.ygz.vtams.transfer.model.Issuer">
+        INSERT INTO TB_ISSUERUPLOAD ( "ID", "NAME", "CONTACT", "TEL", "ADDRESS", "STARTTIME", "ENDTIME", "OPERATION")
+        VALUES ( #{id,jdbcType=CHAR}, #{name,jdbcType=VARCHAR}, #{contact,jdbcType=VARCHAR}, #{tel,jdbcType=VARCHAR},
+        #{address,jdbcType=VARCHAR},#{startTime,jdbcType=VARCHAR}, #{endTime,jdbcType=VARCHAR}, #{operation,jdbcType=INTEGER})
+    </insert>
+
+    <!-- 保存用户卡帐余额信息记录 -->
+    <insert id="saveBalance" parameterType="com.hgsoft.ygz.vtams.transfer.model.Balance">
+        INSERT INTO TB_BALANCEUPLOAD ( "USERID", "CARDID", "FEE")
+        VALUES ( #{userId,jdbcType=CHAR}, #{cardId,jdbcType=CHAR}, #{fee,jdbcType=BIGINT})
+    </insert>
+
+    <!-- 保存OBU黑名单信息记录 -->
+    <insert id="saveObuBlack" parameterType="com.hgsoft.ygz.vtams.transfer.model.ObuBlack">
+        INSERT INTO TB_OBUBLACKLISTUPLOAD ( "ISSUERID", "CREATIONTIME", "TYPE", "OBUID", "STATUS")
+        VALUES ( #{issuerId,jdbcType=CHAR},#{creationTime,jdbcType=VARCHAR},
+        #{type,jdbcType=INTEGER},#{obuId,jdbcType=CHAR},#{status,jdbcType=INTEGER})
+    </insert>
+
+    <!-- 保存退款交易信息记录 -->
+    <insert id="saveRefund" parameterType="com.hgsoft.ygz.vtams.transfer.model.Refund">
+        INSERT INTO TB_REFUNDUPLOAD("ID","USERID","CARDID","FEE")
+        VALUES(#{id,jdbcType=VARCHAR},#{userId,jdbcType=CHAR},
+        #{cardId,jdbcType=CHAR},#{fee,jdbcType=BIGINT})
+    </insert>
+
+    <!-- 保存退费交易信息 -->
+    <insert id="saveRefee" parameterType="com.hgsoft.ygz.vtams.transfer.model.Refee">
+        INSERT INTO TB_REFEEUPLOAD ( "ID", "TYPE", "FEE", "EFFECTIVETIME", "SECTIONCOUNT", "SPLITTIME",
+        "ORDERNUM", "IDENTIFICATION", "DETAILS")
+        VALUES ( #{id,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{fee,jdbcType=INTEGER},#{effectiveTime,jdbcType=VARCHAR},
+        #{sectionCount,jdbcType=INTEGER}, #{splitTime,jdbcType=VARCHAR}, #{orderNum,jdbcType=VARCHAR},
+        #{identification,jdbcType=INTEGER}, #{details,jdbcType=VARCHAR})
+    </insert>
+
+    <!-- 保存非现金补交交易信息 -->
+    <insert id="saveEtcRestitution" parameterType="com.hgsoft.ygz.vtams.transfer.model.EtcRestitution">
+        INSERT INTO TB_ETCRESTITUTIONUPLOAD ( "ID", "FEE", "EFFECTIVETIME", "SECTIONCOUNT", "SPLITTIME",
+         "ORDERNUM", "IDENTIFICATION", "DETAILS")
+         VALUES ( #{id,jdbcType=VARCHAR}, #{fee,jdbcType=INTEGER},#{effectiveTime,jdbcType=VARCHAR},
+        #{sectionCount,jdbcType=INTEGER}, #{splitTime,jdbcType=VARCHAR}, #{orderNum,jdbcType=VARCHAR},
+        #{identification,jdbcType=INTEGER}, #{details,jdbcType=VARCHAR})
+
+    </insert>
+
+    <!-- 保存其他补交交易信息 -->
+    <insert id="saveOtherRestitution" parameterType="com.hgsoft.ygz.vtams.transfer.model.OtherRestitution">
+        INSERT INTO TB_OTHERRESTITUTIONUPLOAD ( "ID", "FEE", "EFFECTIVETIME", "ENTOLLLANEID", "VEHICLEID",
+        "VEHICLETYPE", "SECTIONCOUNT", "SPLITTIME", "ORDERNUM", "IDENTIFICATION", "DETAILS")
+        VALUES ( #{id,jdbcType=VARCHAR}, #{fee,jdbcType=INTEGER},#{effectiveTime,jdbcType=VARCHAR},
+        #{enTollLaneId,jdbcType=VARCHAR},#{vehicleId,jdbcType=VARCHAR},#{vehicleType,jdbcType=INTEGER},
+        #{sectionCount,jdbcType=INTEGER}, #{splitTime,jdbcType=VARCHAR}, #{orderNum,jdbcType=VARCHAR},
+        #{identification,jdbcType=INTEGER}, #{details,jdbcType=VARCHAR})
+    </insert>
+
+</mapper>
