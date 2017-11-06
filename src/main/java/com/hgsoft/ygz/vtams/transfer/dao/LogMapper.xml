@@ -41,7 +41,7 @@
     <!-- 保存处理成功的同步消息日志记录 -->
     <insert id="saveSuccessfulSyncLog" parameterType="com.hgsoft.ygz.vtams.transfer.model.business.log.SyncLog">
         INSERT INTO TB_BUSINESS_SYNCSUCC_LOG( "ID", "BATCH_NO", "BUSINESS_CONTENT", "BUSINESS_TYPE", "OPERATION", "RECEIVED_TIME",
-         "MAPPING_START_TIME", "MAPPING_END_TIME", "REQ_FILEAME", "REQ_JSONSTR", "REQ_FILEMD5", "REQ_TIME", "RESP_CORE", "RESP_CONTENT",
+         "MAPPING_START_TIME", "MAPPING_END_TIME", "REQ_FILEAME", "REQ_JSONSTR", "REQ_FILEMD5", "REQ_TIME", "RESP_CODE", "RESP_CONTENT",
           "RETRY_TIMES", "RESP_TIME", "STATUS_DESC")
           values ( SEQ_BUSINESS_SYNCSUCC_LOG.nextval, #{batchNo,jdbcType=BIGINT}, #{businessContent,jdbcType=VARCHAR}, #{businessType,jdbcType=VARCHAR},
            #{operation,jdbcType=INTEGER}, #{receivedTime,jdbcType=TIMESTAMP}, #{mappingStartTime,jdbcType=TIMESTAMP}, #{mappingEndTime,jdbcType=TIMESTAMP},
@@ -53,7 +53,7 @@
     <insert id="batchSaveSuccessfulSyncLog" parameterType="list">
         INSERT INTO TB_BUSINESS_SYNCSUCC_LOG( "ID", "BATCH_NO", "BUSINESS_CONTENT", "BUSINESS_TYPE", "OPERATION",
         "RECEIVED_TIME","MAPPING_START_TIME", "MAPPING_END_TIME", "REQ_FILEAME", "REQ_JSONSTR", "REQ_FILEMD5",
-        "REQ_TIME","RESP_CORE", "RESP_CONTENT","RETRY_TIMES", "RESP_TIME", "STATUS_DESC")
+        "REQ_TIME","RESP_CODE", "RESP_CONTENT","RETRY_TIMES", "RESP_TIME", "STATUS_DESC")
         SELECT SEQ_BUSINESS_SYNCSUCC_LOG.nextval,A.* FROM (
         <foreach collection="list" item="log" separator="UNION ALL">
             SELECT #{log.batchNo,jdbcType=BIGINT},#{log.businessContent,jdbcType=VARCHAR},
@@ -72,7 +72,7 @@
     <!-- 保存处理失败的同步消息日志记录 -->
     <insert id="saveFailedSyncLog" parameterType="com.hgsoft.ygz.vtams.transfer.exception.SyncException">
         INSERT INTO TB_BUSINESS_SYNCFAIL_LOG( "ID", "BATCH_NO", "BUSINESS_CONTENT", "BUSINESS_TYPE", "OPERATION", "RECEIVED_TIME",
-         "MAPPING_START_TIME", "MAPPING_END_TIME", "REQ_FILEAME", "REQ_JSONSTR", "REQ_FILEMD5", "REQ_TIME", "RESP_CORE", "RESP_CONTENT",
+         "MAPPING_START_TIME", "MAPPING_END_TIME", "REQ_FILEAME", "REQ_JSONSTR", "REQ_FILEMD5", "REQ_TIME", "RESP_CODE", "RESP_CONTENT",
           "RETRY_TIMES", "RESP_TIME", "STATUS_DESC")
           values ( SEQ_BUSINESS_SYNCFAIL_LOG.nextval, #{batchNo,jdbcType=BIGINT}, #{businessContent,jdbcType=VARCHAR}, #{businessType,jdbcType=VARCHAR},
            #{operation,jdbcType=INTEGER}, #{receivedTime,jdbcType=TIMESTAMP}, #{mappingStartTime,jdbcType=TIMESTAMP}, #{mappingEndTime,jdbcType=TIMESTAMP},
@@ -84,7 +84,7 @@
     <insert id="batchSaveFailedSyncLog" parameterType="com.hgsoft.ygz.vtams.transfer.exception.SyncException">
         INSERT INTO TB_BUSINESS_SYNCFAIL_LOG( "ID", "BATCH_NO", "BUSINESS_CONTENT", "BUSINESS_TYPE", "OPERATION",
         "RECEIVED_TIME","MAPPING_START_TIME", "MAPPING_END_TIME", "REQ_FILEAME", "REQ_JSONSTR", "REQ_FILEMD5",
-        "REQ_TIME", "RESP_CORE","RESP_CONTENT","RETRY_TIMES", "RESP_TIME", "STATUS_DESC")
+        "REQ_TIME", "RESP_CODE","RESP_CONTENT","RETRY_TIMES", "RESP_TIME", "STATUS_DESC")
         SELECT SEQ_BUSINESS_SYNCFAIL_LOG.nextval,A.* FROM (
         <foreach collection="list" item="log" separator="UNION ALL">
             SELECT #{log.batchNo,jdbcType=BIGINT}, #{log.businessContent,jdbcType=VARCHAR},

@@ -31,6 +31,7 @@ public class ObjectMapperFactory implements FactoryBean<ObjectMapper> {
         objectMapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
         //忽略无法识别的属性
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
         return this.objectMapper;
     }
 

@@ -1,10 +1,10 @@
 package com.hgsoft.ygz.vtams.transfer.services;
 
 /**
+ * 用户卡信息上传及变更
+ *
  * @author zhangliang
- * @ClassName：IUserCardService
- * @Description：用户卡信息上传及变更
- * @date 2017/10/16
+ * @date 2017-10-16
  */
-public interface IUserCardService  extends IMsgSyncService{
+public interface IUserCardService extends IMsgSyncService {
 }

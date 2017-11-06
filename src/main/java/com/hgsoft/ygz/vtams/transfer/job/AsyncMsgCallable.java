@@ -74,6 +74,7 @@ public class AsyncMsgCallable implements Callable<AsyncLog> {
                 if (e instanceof NotBusinessException) {
                     notBusinessException = (NotBusinessException) e;
                 } else {
+                    e.printStackTrace();
                     notBusinessException = new NotBusinessException();
                     notBusinessException.setStatusDesc("目标方法[ distributeAsyncMsg ]出现未处理异常[" + e.getClass().getName() + "]");
                 }

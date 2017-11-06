@@ -66,7 +66,7 @@ public class ObuBlackServiceImpl implements IObuBlackService {
         ObuBlack obuBlack = new ObuBlack();
 
         //设置发行方编号
-        obuBlack.setIssuerId(VTAMsgContant.ISSUSER_ID);
+        obuBlack.setIssuerId(VTAMsgContant.ISSUER_ID);
 
         //设置黑名单生成时间
         obuBlack.setCreationTime(DateUtil.format(obuBlackMiddle.getCreationTime()));

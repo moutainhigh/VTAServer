@@ -38,7 +38,7 @@ public class JsonServiceImpl implements IJsonService {
         try {
             result = objectMapper.readValue(src, valueType);
         } catch (IOException e) {
-            //e.printStackTrace();
+            e.printStackTrace();
         }
         return result;
     }

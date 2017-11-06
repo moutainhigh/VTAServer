@@ -1,6 +1,6 @@
 package com.hgsoft.ygz.vtams.transfer.services;
 
-import com.hgsoft.ygz.vtams.transfer.exception.SyncException;
+import com.hgsoft.ygz.vtams.transfer.model.business.MsgResult;
 
 /**
  * 通信接口
@@ -15,7 +15,7 @@ public interface ICommunicationService {
      *
      * @param jsonStr      需要发送的json消息
      * @param businessType 业务类型
-     * @return SyncException 返回自定义的异常日志类型
+     * @return MsgResult 返回自定义的异常日志类型
      */
-    SyncException sendMsg(String jsonStr, String businessType);
+    MsgResult sendMsg(String jsonStr, String businessType);
 }

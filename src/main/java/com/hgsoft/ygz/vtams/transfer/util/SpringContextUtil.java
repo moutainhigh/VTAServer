@@ -26,19 +26,21 @@ public class SpringContextUtil implements ApplicationContextAware {
 
 
     /**
-     * 根据bean name获取bean
+     * 根据bean name获取bean <br/>
+     * 由于并发调用，这里可能会出现重复赋值的现象，但是由于在此处对性能的影响较小且对结果无影响，所以不作处理
      *
      * @param name bean name
      * @return 如果找到了则返回bean，否则返回null
      */
     public static Object getBean(String name) {
-        //由于并发调用，这里可能会出现重复赋值的现象，但是由于在此处对性能的影响较小，不作处理
         if (beanMap.containsKey(name)) {
             return beanMap.get(name);
         }
 
         try {
-            return applicationContext.getBean(name);
+            Object object = applicationContext.getBean(name);
+            beanMap.put(name, object);
+            return object;
         } catch (BeansException e) {
             return null;
         }

@@ -1,6 +1,7 @@
 package com.hgsoft.ygz.vtams.transfer.model.business;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.hgsoft.ygz.vtams.transfer.common.validation.CustomPattern;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.NotNull;
@@ -22,7 +23,7 @@ public class ReversalMiddle implements Serializable {
      * 充值交易标识
      */
     @NotBlank(message = "充值交易标识不能为空")
-    @Pattern(regexp = "^[0-9]+$", message = "充值交易标识必须由数字组成")
+    @CustomPattern(regexp = "^[0-9]+$", message = "充值交易标识必须由数字组成")
     @JsonProperty("id")
     private String oldRechargeId;
 
@@ -36,7 +37,7 @@ public class ReversalMiddle implements Serializable {
      * 卡号
      */
     @NotBlank(message = "用户卡号不能为空")
-    @Pattern(regexp = "^[0-9]{16}$", message = "用户卡号必须为16位数字")
+    @CustomPattern(regexp = "^[0-9]{16}$", message = "用户卡号必须为16位数字")
     private String cardId;
 
     public String getOldRechargeId() {

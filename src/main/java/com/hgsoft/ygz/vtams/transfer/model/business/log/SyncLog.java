@@ -229,5 +229,28 @@ public class SyncLog extends MsgLog {
     public void setStatusDesc(String statusDesc) {
         this.statusDesc = statusDesc;
     }
+
+    @Override
+    public String toString() {
+        return "SyncLog{" +
+                "id=" + id +
+                ", batchNo=" + batchNo +
+                ", businessContent='" + businessContent + '\'' +
+                ", businessType='" + businessType + '\'' +
+                ", operation=" + operation +
+                ", receivedTime=" + receivedTime +
+                ", mappingStartTime=" + mappingStartTime +
+                ", mappingEndTime=" + mappingEndTime +
+                ", reqFileName='" + reqFileName + '\'' +
+                ", reqJsonStr='" + reqJsonStr + '\'' +
+                ", reqFileMd5='" + reqFileMd5 + '\'' +
+                ", requestTime=" + requestTime +
+                ", retryTimes=" + retryTimes +
+                ", responseCode=" + responseCode +
+                ", responseContent='" + responseContent + '\'' +
+                ", responseTime=" + responseTime +
+                ", statusDesc='" + statusDesc + '\'' +
+                '}';
+    }
 }
 

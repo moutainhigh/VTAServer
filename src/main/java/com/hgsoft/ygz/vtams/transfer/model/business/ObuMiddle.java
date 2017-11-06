@@ -1,6 +1,7 @@
 package com.hgsoft.ygz.vtams.transfer.model.business;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.hgsoft.ygz.vtams.transfer.common.validation.CustomPattern;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.NotNull;
@@ -24,23 +25,11 @@ public class ObuMiddle implements Serializable {
     private String id;
 
     /**
-     * obu品牌，必填
-     */
-    @NotNull(message = "obu品牌不能为空")
-    private Integer brand;
-
-    /**
-     * 型号，必填
-     */
-    @NotBlank(message = "obu型号不能为空")
-    private String model;
-
-    /**
      * 客户编号,必填
      */
     @JsonProperty("userId")
     @NotBlank(message = "客户编号不能为空")
-    @Pattern(regexp = "^[0-9]{20}$", message = "客户编号必须由20位数字组成")
+    @CustomPattern(regexp = "^[0-9]{20}$", message = "客户编号必须由20位数字组成")
     private String oldUserNo;
 
     /**
@@ -53,7 +42,7 @@ public class ObuMiddle implements Serializable {
      * 车牌颜色
      */
     @NotBlank(message = "车牌颜色不能为空")
-    @Pattern(regexp = "^[0-9]$", message = "车牌颜色只能是1位数字")
+    @CustomPattern(regexp = "^[0-9]$", message = "车牌颜色只能是1位数字")
     private String vehicleColor;
 
     /**
@@ -72,7 +61,7 @@ public class ObuMiddle implements Serializable {
      * OBU注册方式，1：线上 2：线下,必填
      */
     @NotNull(message = "obu注册方式不能为空")
-    @Pattern(regexp = "^[12]$", message = "obu注册方式只能为1[线上]或2[线下]")
+    @CustomPattern(regexp = "^[12]$", message = "obu注册方式只能为1[线上]或2[线下]")
     private Integer registeredType;
 
     /**
@@ -80,7 +69,7 @@ public class ObuMiddle implements Serializable {
      */
     @JsonProperty("registeredChannelId")
     @NotBlank(message = "渠道编号不能为空")
-    @Pattern(regexp = "^[0-9A-Za-z]+$", message = "渠道编号必须由数字或字母组成")
+    @CustomPattern(regexp = "^[0-9A-Za-z]+$", message = "渠道编号必须由数字或字母组成")
     private String oldPointCode;
 
     /**
@@ -93,7 +82,7 @@ public class ObuMiddle implements Serializable {
      * OBU安装方式，1：自行安装 2：网点安装，必填
      */
     @NotNull(message = "obu安装方式不能为空")
-    @Pattern(regexp = "^[12]$", message = "obu安装方式只能为1[自行安装]或2[网点安装]")
+    @CustomPattern(regexp = "^[12]$", message = "obu安装方式只能为1[自行安装]或2[网点安装]")
     private Integer installType;
 
     /**
@@ -111,7 +100,7 @@ public class ObuMiddle implements Serializable {
      * OBU状态,1-8，必填
      */
     @NotNull(message = "obu状态不能为空")
-    @Pattern(regexp = "^[1-8]$", message = "obu状态只能为1-8")
+    @CustomPattern(regexp = "^[1-8]$", message = "obu状态只能为1-8")
     private Integer status;
 
     /**
@@ -131,22 +120,6 @@ public class ObuMiddle implements Serializable {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public Integer getBrand() {
-        return brand;
-    }
-
-    public void setBrand(Integer brand) {
-        this.brand = brand;
-    }
-
-    public String getModel() {
-        return model;
-    }
-
-    public void setModel(String model) {
-        this.model = model;
     }
 
     public String getOldUserNo() {
@@ -265,8 +238,6 @@ public class ObuMiddle implements Serializable {
     public String toString() {
         return "ObuMiddle{" +
                 "id='" + id + '\'' +
-                ", brand=" + brand +
-                ", model='" + model + '\'' +
                 ", oldUserNo='" + oldUserNo + '\'' +
                 ", vehiclePlate='" + vehiclePlate + '\'' +
                 ", vehicleColor='" + vehicleColor + '\'' +

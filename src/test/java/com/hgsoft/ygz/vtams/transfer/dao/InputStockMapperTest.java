@@ -40,7 +40,7 @@ public class InputStockMapperTest {
         cardBlack.setStatus(1);
         cardBlack.setType(1);
         cardBlack.setCreationTime(DateUtil.format(new Date()));
-        cardBlack.setIssuerId(VTAMsgContant.ISSUSER_ID);
+        cardBlack.setIssuerId(VTAMsgContant.ISSUER_ID);
         cardBlack.setCardId(VTAMsgContant.AREA_CODE + "7353528977222288");
         final int effectiveCount = inputStockMapper.saveCardBlack(cardBlack);
         Assert.assertEquals(effectiveCount, 1);
@@ -132,7 +132,7 @@ public class InputStockMapperTest {
     @Test
     public void testSaveObuBlack() {
         ObuBlack obuBlack = new ObuBlack();
-        obuBlack.setIssuerId(VTAMsgContant.ISSUSER_ID);
+        obuBlack.setIssuerId(VTAMsgContant.ISSUER_ID);
         obuBlack.setCreationTime(DateUtil.format(new Date()));
         obuBlack.setType(1);
         obuBlack.setObuId("4401011234567890");

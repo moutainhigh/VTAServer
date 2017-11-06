@@ -3,7 +3,7 @@
     <!-- 变量配置 -->
     <Properties>
         <!--<Property name="LOG_HOME">../log/VTAMsgServer</Property>-->
-        <Property name="LOG_HOME">${sys:catalina.home}/log/VTAMsgServer</Property>
+        <Property name="LOG_HOME">${catalina.home}/log/VTAMsgServer</Property>
         <Property name="logPattern">%X{userId} %d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %class{36} %L %M - %msg%xEx%n
         </Property>
     </Properties>

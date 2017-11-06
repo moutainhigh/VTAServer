@@ -1,7 +1,7 @@
 package com.hgsoft.ygz.vtams.transfer.services.impl;
 
 
-import com.hgsoft.ygz.vtams.transfer.exception.SyncException;
+import com.hgsoft.ygz.vtams.transfer.model.business.MsgResult;
 import com.hgsoft.ygz.vtams.transfer.services.ICommunicationService;
 import com.hgsoft.ygz.vtams.transfer.util.CommunicationUtil;
 import com.hgsoft.ygz.vtams.transfer.util.DateUtil;
@@ -42,18 +42,17 @@ public class CommunicationServiceImpl implements ICommunicationService {
 
     private final Logger log = LoggerFactory.getLogger(CommunicationServiceImpl.class);
 
-    private final String COMMUNICATION_URL = "http://10.44.2.130:8080/BTVDEXTransferIntime/openApi/standardApi";
+    private final String COMMUNICATION_URL = "http://10.173.232.66:8080/BTVDEXTransferIntime/openApi/standardApi";
 
     @Override
-    public SyncException sendMsg(final String jsonStr, final String businessType) {
+    public MsgResult sendMsg(final String jsonStr, final String businessType) {
 
         //根据businessType生成文件名
         final BusinessTypeEnum businessT = BusinessTypeEnum.valueOf(businessType);
-        StringBuilder fileNameBuilder = new StringBuilder("BASIC_").append(businessT.name())
+        StringBuilder fileNameBuilder = new StringBuilder(businessT.getReqPrefix()).append(businessT.name())
                 .append("_REQ_44_").append(DateUtil.format(new Date(), "yyyyMMddHHmmssSSS")).append(".json");
         final String fileName = fileNameBuilder.toString();
         final String md5Str = DigestUtils.md5Hex(jsonStr);
-
 
         HttpPost httpPost = new HttpPost(COMMUNICATION_URL);
         // 设置请求头（headers)、请求参数
@@ -65,42 +64,45 @@ public class CommunicationServiceImpl implements ICommunicationService {
 
         try {
             httpPost.setEntity(new UrlEncodedFormEntity(nvps, "UTF-8"));
-            SyncException syncException = communicationUtil.execute(httpPost, new ResponseHandler<SyncException>() {
+            MsgResult msgResult = communicationUtil.execute(httpPost, new ResponseHandler<MsgResult>() {
                 @Override
-                public SyncException handleResponse(HttpResponse response) throws ClientProtocolException, IOException {
-                    //构造异常记录对象
-                    SyncException result = new SyncException();
+                public MsgResult handleResponse(HttpResponse response) throws ClientProtocolException, IOException {
+
+                    MsgResult msgResult = new MsgResult();
+
                     //获取响应码、响应内容、响应时间
                     final int statusCode = response.getStatusLine().getStatusCode();
-                    result.setResponseCode(statusCode);
-                    result.setResponseTime(DateUtil.getCurrentSqlTimestamp());
-                    result.setReqFileMd5(md5Str);
-                    result.setReqFileName(fileName);
+                    msgResult.setResponseCode(statusCode);
+                    msgResult.setResponseTime(DateUtil.getCurrentSqlTimestamp());
+                    msgResult.setReqFileMd5(md5Str);
+                    msgResult.setReqFileName(fileName);
+
                     if (statusCode >= 200 && statusCode < 300) {
                         HttpEntity entity = response.getEntity();
                         final String content = null != entity ? EntityUtils.toString(entity, "UTF-8") : "";
-                        result.setResponseContent(content);
-                        result.setStatusDesc(businessT.getDesc() + " 消息发送成功");
+                        msgResult.setResponseContent(content);
+                        msgResult.setStatusDesc(businessT.getDesc() + " 消息发送成功");
                     } else if (statusCode >= 300 && statusCode < 700) {
-                        result.setStatusDesc("发送失败:http通信异常");
+                        msgResult.setStatusDesc("发送失败:http通信异常");
                     } else if (statusCode >= 700) {
                         HttpEntity entity = response.getEntity();
                         final String content = null != entity ? EntityUtils.toString(entity, "UTF-8") : "";
-                        result.setResponseContent(content);
-                        result.setStatusDesc("发送失败:" + businessT.getDesc() + " 消息发送失败，请根据状态码查询异常信息");
+                        msgResult.setResponseContent(content);
+                        msgResult.setStatusDesc("发送失败:" + businessT.getDesc() + " 消息发送失败，请根据状态码查询异常信息");
                     }
-                    return result;
+                    return msgResult;
                 }
             });
-            return syncException;
+            return msgResult;
         } catch (Exception e) {
-            SyncException syncException = new SyncException();
+            e.printStackTrace();
+            MsgResult msgResult = new MsgResult();
             StringBuilder tempBuilder = new StringBuilder(100);
             tempBuilder.append("发送失败:").append(businessT.getDesc()).append(" 消息发送失败,可能是").append(e.getMessage());
-            syncException.setStatusDesc(tempBuilder.toString());
-            syncException.setReqFileMd5(md5Str);
-            syncException.setReqFileName(fileName);
-            return syncException;
+            msgResult.setStatusDesc(tempBuilder.toString());
+            msgResult.setReqFileMd5(md5Str);
+            msgResult.setReqFileName(fileName);
+            return msgResult;
         }
     }
 }

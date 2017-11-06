@@ -1,9 +1,9 @@
 package com.hgsoft.ygz.vtams.transfer.model.business;
 
+import com.hgsoft.ygz.vtams.transfer.common.validation.CustomPattern;
 import org.hibernate.validator.constraints.NotBlank;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 
 /**
@@ -22,15 +22,15 @@ public class CardBlackMiddle implements Serializable {
     private Long creationTime;
 
     @NotNull(message = "黑名单类型不能为空")
-    @Pattern(regexp = "^[1-6]$", message = "黑名单类型只能是1-6")
+    @CustomPattern(regexp = "^[1-6]$",message = "黑名单类型只能是1-6")
     private Integer type;
 
     @NotBlank(message = "用户卡号不能为空")
-    @Pattern(regexp = "^[0-9]{16}$", message = "用户卡号必须为16位数字")
+    @CustomPattern(regexp = "^[0-9]{16}$", message = "用户卡号必须为16位数字")
     private String cardId;
 
     @NotNull(message = "用户卡状态不能为空")
-    @Pattern(regexp = "^[12]$", message = "用户卡状态只能为1[进入黑名单]或2[解除黑名单]")
+    @CustomPattern(regexp = "^[12]$", message = "用户卡状态只能为1[进入黑名单]或2[解除黑名单]")
     private Integer status;
 
     public String getIssuerId() {

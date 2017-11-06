@@ -69,4 +69,18 @@ public interface BusinessReqMapper {
      * @return 受影响的记录数
      */
     int batchRemoveSyncBusinessReqByPrimaryKey(List<Long> idList);
+
+    /**
+     * 批量插入同步信息对象
+     *
+     * @param syncBusinessReqList 同步信息列表
+     */
+    int batchSaveSyncInfo(List<BusinessReq> syncBusinessReqList);
+
+    /**
+     * 批量插入异步信息对象
+     *
+     * @param asyncBusinessReqList 异步信息列表
+     */
+    int batchSaveAsyncInfo(List<BusinessReq> asyncBusinessReqList);
 }

@@ -39,7 +39,7 @@
     <delete id="batchRemoveAsyncBusinessReqByPrimaryKey" parameterType="list">
         DELETE FROM TB_BUSINESS_NONREALTIME_REQ WHERE ID IN
         <foreach collection="list" item="id" open="(" separator="," close=")">
-          #{id}
+            #{id}
         </foreach>
     </delete>
 
@@ -55,5 +55,29 @@
             #{id}
         </foreach>
     </delete>
+
+    <!-- 批量插入同步信息对象 -->
+    <insert id="batchSaveSyncInfo" parameterType="com.hgsoft.ygz.vtams.transfer.model.business.BusinessReq">
+        INSERT INTO TB_BUSINESS_REALTIME_REQ ( "ID", "BUSINESS_CONTENT", "BUSINESS_TYPE", "OPERATION", "CREATE_TIME")
+        SELECT SEQ_BUSINESS_REALTIME_REQ.nextval,A.* FROM (
+        <foreach collection="list" item="info" separator="UNION ALL">
+            SELECT #{info.businessContent,jdbcType=VARCHAR}, #{info.businessType,jdbcType=VARCHAR},
+            #{info.operation,jdbcType=INTEGER},#{info.createTime,jdbcType=TIMESTAMP}
+            FROM dual
+        </foreach>
+        )A
+    </insert>
+
+    <!-- 批量插入异步信息对象 -->
+    <insert id="batchSaveAsyncInfo" parameterType="com.hgsoft.ygz.vtams.transfer.model.business.BusinessReq">
+        INSERT INTO TB_BUSINESS_NONREALTIME_REQ ( "ID", "BUSINESS_CONTENT", "BUSINESS_TYPE", "OPERATION", "CREATE_TIME")
+        SELECT SEQ_BUSINESS_NONREALTIME_REQ.nextval,A.* FROM (
+        <foreach collection="list" item="info" separator="UNION ALL">
+            SELECT #{info.businessContent,jdbcType=VARCHAR}, #{info.businessType,jdbcType=VARCHAR},
+            #{info.operation,jdbcType=INTEGER},#{info.createTime,jdbcType=TIMESTAMP}
+            FROM dual
+        </foreach>
+        )A
+    </insert>
 
 </mapper>

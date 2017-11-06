@@ -1,6 +1,7 @@
 package com.hgsoft.ygz.vtams.transfer.model.business;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.hgsoft.ygz.vtams.transfer.common.validation.CustomPattern;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.NotNull;
@@ -21,7 +22,7 @@ public class IssuerMiddle implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @NotBlank(message = "发行方编号不能为空")
-    @Pattern(regexp = "^[0-9]{6}$", message = "发行方编号必须由6位数字组成")
+    @CustomPattern(regexp = "^[0-9]{6}$", message = "发行方编号必须由6位数字组成")
     private String id;
 
     @NotBlank(message = "发行方名称不能为空")
@@ -33,7 +34,7 @@ public class IssuerMiddle implements Serializable {
     private String contact;
 
     @NotBlank(message = "联系电话不能为空")
-    @Pattern(regexp = "^[0-9\\-]{2,20}$", message = "联系电话无效")
+    @CustomPattern(regexp = "^[0-9\\-]{2,20}$", message = "联系电话无效")
     private String tel;
 
     @NotBlank(message = "地址不能为空")

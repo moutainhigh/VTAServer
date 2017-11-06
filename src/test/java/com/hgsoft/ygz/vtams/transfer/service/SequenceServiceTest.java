@@ -104,7 +104,7 @@ public class SequenceServiceTest {
         log.info("==============testGetCustomerSeq==============================");
         Date curDate = new Date();
         CustomerSeq customerSeq = new CustomerSeq();
-        customerSeq.setIssuserId(VTAMsgContant.ISSUSER_ID);
+        customerSeq.setIssuerId(VTAMsgContant.ISSUER_ID);
         customerSeq.setYearMonthDay("171102");
         customerSeq.setLastUpdateDate(curDate);
         customerSeq.setCreationDate(curDate);

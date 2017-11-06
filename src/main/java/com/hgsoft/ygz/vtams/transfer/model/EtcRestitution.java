@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
  * 非现金补交交易信息
- * Table：TB_REFEEUPLOAD
+ * Table：TB_ETCRESTITUTIONUPLOAD
  *
  * @author 赖少涯
  * @date 2017-11-03

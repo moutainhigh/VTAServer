@@ -158,4 +158,21 @@ public class AsyncLog extends MsgLog {
     public void setStatusDesc(String statusDesc) {
         this.statusDesc = statusDesc;
     }
+
+    @Override
+    public String toString() {
+        return "AsyncLog{" +
+                "id=" + id +
+                ", batchNo=" + batchNo +
+                ", businessContent='" + businessContent + '\'' +
+                ", businessType='" + businessType + '\'' +
+                ", operation=" + operation +
+                ", receivedTime=" + receivedTime +
+                ", mappingStartTime=" + mappingStartTime +
+                ", mappingEndTime=" + mappingEndTime +
+                ", inputStockStartTime=" + inputStockStartTime +
+                ", inputStockEndTime=" + inputStockEndTime +
+                ", statusDesc='" + statusDesc + '\'' +
+                '}';
+    }
 }

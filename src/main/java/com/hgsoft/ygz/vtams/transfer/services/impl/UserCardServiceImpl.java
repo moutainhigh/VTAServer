@@ -2,6 +2,7 @@ package com.hgsoft.ygz.vtams.transfer.services.impl;
 
 import java.sql.Timestamp;
 
+import com.hgsoft.ygz.vtams.transfer.model.business.MsgResult;
 import com.hgsoft.ygz.vtams.transfer.model.business.log.SyncLog;
 import com.hgsoft.ygz.vtams.transfer.model.map.PointMapping;
 import com.hgsoft.ygz.vtams.transfer.util.ValidationUtil;
@@ -92,6 +93,11 @@ public class UserCardServiceImpl implements IUserCardService {
         //设置用户卡编号
         userCard.setId(VTAMsgContant.AREA_CODE + userCardMiddle.getId());
 
+        //TODO:设置卡类型
+
+        //设置卡品牌
+        userCard.setBrand((int) userCardMiddle.getId().charAt(6));
+
         //设置车辆编号: 车牌号码（18位）+间隔符（1位）+车牌颜色（1位），必填
         final String vehicleId = StringUtils.trimToEmpty(userCardMiddle.getVehiclePlate()) + "_" + userCardMiddle.getVehicleColor();
         userCard.setVehicleId(vehicleId);
@@ -105,20 +111,22 @@ public class UserCardServiceImpl implements IUserCardService {
         //设置操作类型
         userCard.setOperation(msg.getOperation());
 
+        //TODO:过滤公务卡
+
         //发送最终映射customer 到部中心
         final Timestamp mappingEndTime = DateUtil.getCurrentSqlTimestamp();
         syncException.setMappingEndTime(mappingEndTime);
         syncException.setRequestTime(mappingEndTime);
 
         final String jsonStr = jsonService.getString(userCard);
-        SyncException se = communicationService.sendMsg(jsonStr, msg.getBusinessType());
+        MsgResult msgResult = communicationService.sendMsg(jsonStr, msg.getBusinessType());
 
-        syncException.setReqFileName(se.getReqFileName());
-        syncException.setReqFileMd5(se.getReqFileMd5());
-        syncException.setResponseTime(se.getResponseTime());
-        syncException.setResponseContent(se.getResponseContent());
-        syncException.setResponseCode(se.getResponseCode());
-        syncException.setStatusDesc(se.getStatusDesc());
+        syncException.setReqFileName(msgResult.getReqFileName());
+        syncException.setReqFileMd5(msgResult.getReqFileMd5());
+        syncException.setResponseTime(msgResult.getResponseTime());
+        syncException.setResponseContent(msgResult.getResponseContent());
+        syncException.setResponseCode(msgResult.getResponseCode());
+        syncException.setStatusDesc(msgResult.getStatusDesc());
 
         //判断响应码,200-300则正常返回，否则抛出异常
         if (syncException.getResponseCode() >= 200 && syncException.getResponseCode() < 300) {

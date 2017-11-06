@@ -7,6 +7,7 @@ import com.hgsoft.ygz.vtams.transfer.common.validation.CustomGroup;
 import com.hgsoft.ygz.vtams.transfer.constant.VTAMsgContant;
 import com.hgsoft.ygz.vtams.transfer.model.Customer;
 import com.hgsoft.ygz.vtams.transfer.model.business.CustomerMiddle;
+import com.hgsoft.ygz.vtams.transfer.model.business.MsgResult;
 import com.hgsoft.ygz.vtams.transfer.model.business.log.AsyncLog;
 import com.hgsoft.ygz.vtams.transfer.model.business.log.SyncLog;
 import com.hgsoft.ygz.vtams.transfer.model.map.CustomerSeq;
@@ -105,20 +106,23 @@ public class VehicleServiceImpl implements IVehicleService {
         //设置操作类型
         vehicle.setOperation(msg.getOperation());
 
+        //TODO:过滤公务车
+        //TODO:过滤存量失败车辆
+
         //发送最终映射customer 到部中心
         final Timestamp mappingEndTime = DateUtil.getCurrentSqlTimestamp();
         syncException.setMappingEndTime(mappingEndTime);
         syncException.setRequestTime(mappingEndTime);
 
         final String jsonStr = jsonService.getString(vehicle);
-        SyncException se = communicationService.sendMsg(jsonStr, msg.getBusinessType());
+        MsgResult msgResult = communicationService.sendMsg(jsonStr, msg.getBusinessType());
 
-        syncException.setReqFileName(se.getReqFileName());
-        syncException.setReqFileMd5(se.getReqFileMd5());
-        syncException.setResponseTime(se.getResponseTime());
-        syncException.setResponseContent(se.getResponseContent());
-        syncException.setResponseCode(se.getResponseCode());
-        syncException.setStatusDesc(se.getStatusDesc());
+        syncException.setReqFileName(msgResult.getReqFileName());
+        syncException.setReqFileMd5(msgResult.getReqFileMd5());
+        syncException.setResponseTime(msgResult.getResponseTime());
+        syncException.setResponseContent(msgResult.getResponseContent());
+        syncException.setResponseCode(msgResult.getResponseCode());
+        syncException.setStatusDesc(msgResult.getStatusDesc());
 
         //判断响应码,200-300则正常返回，否则抛出异常
         if (syncException.getResponseCode() >= 200 && syncException.getResponseCode() < 300) {

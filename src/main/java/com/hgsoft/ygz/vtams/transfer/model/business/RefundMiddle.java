@@ -1,6 +1,7 @@
 package com.hgsoft.ygz.vtams.transfer.model.business;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.hgsoft.ygz.vtams.transfer.common.validation.CustomPattern;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.Min;
@@ -19,17 +20,17 @@ public class RefundMiddle implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @NotBlank(message = "网点编号不能为空")
-    @Pattern(regexp = "^[0-9A-Za-z]+$", message = "网点编号必须由数字或字母组成")
+    @CustomPattern(regexp = "^[0-9A-Za-z]+$", message = "网点编号必须由数字或字母组成")
     @JsonProperty("customPointCode")
     private String oldPointCode;
 
     @NotBlank(message = "用户编号不能为空")
-    @Pattern(regexp = "^[0-9]{20}$", message = "用户编号必须由20位数字组成")
+    @CustomPattern(regexp = "^[0-9]{20}$", message = "用户编号必须由20位数字组成")
     @JsonProperty("userId")
     private String oldUserNo;
 
     @NotBlank(message = "用户卡号不能为空")
-    @Pattern(regexp = "^[0-9]{16}$", message = "用户卡号必须为16位数字")
+    @CustomPattern(regexp = "^[0-9]{16}$", message = "用户卡号必须为16位数字")
     private String cardId;
 
     @NotNull(message = "退款金额不能为空")

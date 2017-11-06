@@ -49,7 +49,7 @@ public class Refee implements Serializable {
     private String orderNum;
 
     /**
-     * 现场开票标识:1为已开报销凭证，2位未开报销凭证
+     * 现场开票标识,1:已开报销凭证,2:未开报销凭证
      */
     private Integer identification;
 

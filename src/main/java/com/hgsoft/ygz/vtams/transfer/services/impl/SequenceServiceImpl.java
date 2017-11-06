@@ -355,23 +355,23 @@ public class SequenceServiceImpl implements ISequenceService {
 
         //尝试次数小于3，说明上一次失败，则休眠300ms后再次尝试，且尝试次数减一
         if (maxAttemptTimesForCustomerSeq.get() < maxTimes) {
-            log.info("上次获取失败，休眠{}ms后，将再次尝试获取客户信息[issuserId={},yearMonthDay={}]顺序码，当前剩余尝试次数：{}",
-                    sleeMilliSeconds, customerSeq.getIssuserId(), customerSeq.getYearMonthDay(), maxAttemptTimesForCustomerSeq.get() - 1);
+            log.info("上次获取失败，休眠{}ms后，将再次尝试获取客户信息[issuerId={},yearMonthDay={}]顺序码，当前剩余尝试次数：{}",
+                    sleeMilliSeconds, customerSeq.getIssuerId(), customerSeq.getYearMonthDay(), maxAttemptTimesForCustomerSeq.get() - 1);
             try {
                 Thread.sleep(sleeMilliSeconds);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         } else {
-            log.info("开始尝试获取客户信息[issuserId={},yearMonthDay={}]顺序码，当前剩余尝试次数：{}",
-                    customerSeq.getIssuserId(), customerSeq.getYearMonthDay(), maxAttemptTimesForCustomerSeq.get() - 1);
+            log.info("开始尝试获取客户信息[issuerId={},yearMonthDay={}]顺序码，当前剩余尝试次数：{}",
+                    customerSeq.getIssuerId(), customerSeq.getYearMonthDay(), maxAttemptTimesForCustomerSeq.get() - 1);
         }
         maxAttemptTimesForCustomerSeq.set(maxAttemptTimesForCustomerSeq.get() - 1);
 
         //构造一个新的对象，之后插入数据库
         Date curDate = new Date();
         final CustomerSeq newInstance = new CustomerSeq();
-        newInstance.setIssuserId(customerSeq.getIssuserId());
+        newInstance.setIssuerId(customerSeq.getIssuerId());
         newInstance.setYearMonthDay(customerSeq.getYearMonthDay());
         newInstance.setStatus(1);
         newInstance.setCreationDate(curDate);

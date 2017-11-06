@@ -29,11 +29,11 @@
         <!-- 单路由默认最大连接数 -->
         <property name="defaultPerRoute" value="200"/>
         <!-- 从连接池获取连接的超时时间，单位毫秒 -->
-        <property name="connectionRequestTimeout" value="-1"/>
+        <property name="connectionRequestTimeout" value="30000"/>
         <!-- 通过一个异步线程去创建与服务器的socket连接时的超时时间,单位毫秒 -->
-        <property name="connectTimeout" value="-1"/>
+        <property name="connectTimeout" value="30000"/>
         <!-- socket读数据的超时时间,单位毫秒 -->
-        <property name="socketTimeout" value="-1"/>
+        <property name="socketTimeout" value="30000"/>
     </bean>
 
 

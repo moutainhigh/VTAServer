@@ -19,7 +19,7 @@ public class VTAMsgContant {
     /**
      * 用户卡、OBU等发行方编号
      */
-    public static final String ISSUSER_ID = "440101";
+    public static final String ISSUER_ID = "440101";
 
     /**
      * 地区编号

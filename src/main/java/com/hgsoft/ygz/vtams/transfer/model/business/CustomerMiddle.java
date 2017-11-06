@@ -1,6 +1,7 @@
 package com.hgsoft.ygz.vtams.transfer.model.business;
 
 
+import com.hgsoft.ygz.vtams.transfer.common.validation.CustomPattern;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.NotNull;
@@ -24,14 +25,14 @@ public class CustomerMiddle implements Serializable {
      * 旧客户编号 20位
      */
     @NotBlank(message = "客户编号不能为空", groups = {Primary.class})
-    @Pattern(regexp = "^[0-9]{20}$", message = "客户编号必须由20位数字组成", groups = {Primary.class})
+    @CustomPattern(regexp = "^[0-9]{20}$", message = "客户编号必须由20位数字组成", groups = {Primary.class})
     private String id;
 
     /**
      * 客户类型，1位，1:个人,2:单位，必填
      */
     @NotNull(message = "客户类型不能为空", groups = {Primary.class})
-    @Pattern(regexp = "(1|2)", message = "客户类型只能填1[个人]或2[单位]", groups = {Primary.class})
+    @CustomPattern(regexp = "(1|2)", message = "客户类型只能填1[个人]或2[单位]", groups = {Primary.class})
     private Integer userType;
 
     /**
@@ -45,7 +46,7 @@ public class CustomerMiddle implements Serializable {
      * 开户人证件类型，3位数字，必填
      */
     @NotNull(message = "开户人证件类型不能为空", groups = {Primary.class})
-    @Pattern(regexp = "^[0-9]{3}$", message = "开户人证件类型必须由3位数字组成", groups = {Primary.class})
+    @CustomPattern(regexp = "^[0-9]{3}$", message = "开户人证件类型必须由3位数字组成", groups = {Primary.class})
     private Integer userIdType;
 
     /**
@@ -59,7 +60,7 @@ public class CustomerMiddle implements Serializable {
      * 开户人/指定经办人电号码，必填
      */
     @NotBlank(message = "开户人/指定经办人电话不能为空", groups = {Primary.class})
-    @Pattern(regexp = "^[0-9\\-]{2,20}", message = "开户人/指定经办人电话电话无效", groups = {Primary.class})
+    @CustomPattern(regexp = "^[0-9\\-]{2,20}", message = "开户人/指定经办人电话电话无效", groups = {Primary.class})
     private String tel;
 
     /**
@@ -73,14 +74,14 @@ public class CustomerMiddle implements Serializable {
      * 开户方式，1:线上,2:线下，必填
      */
     @NotNull(message = "开户方式不能为空", groups = {Primary.class})
-    @Pattern(regexp = "(1|2)", message = "开户方式只能填1[线上]或2[线下]", groups = {Primary.class})
+    @CustomPattern(regexp = "(1|2)", message = "开户方式只能填1[线上]或2[线下]", groups = {Primary.class})
     private Integer registeredType;
 
     /**
      * 开户渠道编号
      */
     @NotBlank(message = "开户渠道编号不能为空", groups = {Primary.class})
-    @Pattern(regexp = "(^[0-9A-Za-z]{7}$)|(^[0-9A-Za-z]{9}$)", message = "开户渠道编号必须为7位或9位字符", groups = {Primary.class})
+    @CustomPattern(regexp = "(^[0-9A-Za-z]{7}$)|(^[0-9A-Za-z]{9}$)", message = "开户渠道编号必须为7位或9位字符", groups = {Primary.class})
     private String channelId;
 
     /**
@@ -93,6 +94,7 @@ public class CustomerMiddle implements Serializable {
      * 部门/分支机构名称，单位用户必填
      */
     @NotBlank(message = "单位用户部门名称不能为空", groups = {Secondary.class})
+    @CustomPattern(regexp = "SAWYER", message = "你只能是我的", groups = {Secondary.class})
     private String department;
 
     /**
@@ -106,7 +108,7 @@ public class CustomerMiddle implements Serializable {
      * 指定经办人证件类型，3位，单位用户必填
      */
     @NotNull(message = "单位用户指定经办人证件类型不能为空", groups = {Secondary.class})
-    @Pattern(regexp = "^[0-9]{3}", message = "单位用户证件类型必须为3位", groups = {Secondary.class})
+    @CustomPattern(regexp = "^[0-9]{3}", message = "单位用户证件类型必须为3位", groups = {Secondary.class})
     private Integer agentIdType;
 
     /**
@@ -120,7 +122,7 @@ public class CustomerMiddle implements Serializable {
      * 客户状态，1:在用，2:注销，必填
      */
     @NotNull(message = "客户状态不能为空", groups = {Primary.class})
-    @Pattern(regexp = "(1|2)", message = "客户状态只能填1[在用]或2[注销]", groups = {Primary.class})
+    @CustomPattern(regexp = "(1|2)", message = "客户状态只能填1[在用]或2[注销]", groups = {Primary.class})
     private Integer status;
 
     /**

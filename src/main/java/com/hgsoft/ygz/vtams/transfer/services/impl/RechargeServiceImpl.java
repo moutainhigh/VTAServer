@@ -3,6 +3,7 @@ package com.hgsoft.ygz.vtams.transfer.services.impl;
 import java.sql.Timestamp;
 
 import com.hgsoft.ygz.vtams.transfer.model.Vehicle;
+import com.hgsoft.ygz.vtams.transfer.model.business.MsgResult;
 import com.hgsoft.ygz.vtams.transfer.model.business.VehicleMiddle;
 import com.hgsoft.ygz.vtams.transfer.model.business.log.SyncLog;
 import com.hgsoft.ygz.vtams.transfer.model.map.*;
@@ -117,14 +118,14 @@ public class RechargeServiceImpl implements IRechargeService {
         syncException.setRequestTime(mappingEndTime);
 
         final String jsonStr = jsonService.getString(recharge);
-        SyncException se = communicationService.sendMsg(jsonStr, msg.getBusinessType());
+        MsgResult msgResult = communicationService.sendMsg(jsonStr, msg.getBusinessType());
 
-        syncException.setReqFileName(se.getReqFileName());
-        syncException.setReqFileMd5(se.getReqFileMd5());
-        syncException.setResponseTime(se.getResponseTime());
-        syncException.setResponseContent(se.getResponseContent());
-        syncException.setResponseCode(se.getResponseCode());
-        syncException.setStatusDesc(se.getStatusDesc());
+        syncException.setReqFileName(msgResult.getReqFileName());
+        syncException.setReqFileMd5(msgResult.getReqFileMd5());
+        syncException.setResponseTime(msgResult.getResponseTime());
+        syncException.setResponseContent(msgResult.getResponseContent());
+        syncException.setResponseCode(msgResult.getResponseCode());
+        syncException.setStatusDesc(msgResult.getStatusDesc());
 
         //判断响应码,200-300则正常返回，否则抛出异常
         if (syncException.getResponseCode() >= 200 && syncException.getResponseCode() < 300) {

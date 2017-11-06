@@ -1,12 +1,16 @@
 package com.hgsoft.ygz.vtams.transfer.services.impl;
 
+import com.hgsoft.ygz.vtams.transfer.common.enums.BusinessTypeEnum;
 import com.hgsoft.ygz.vtams.transfer.dao.BusinessReqMapper;
 import com.hgsoft.ygz.vtams.transfer.exception.NotBusinessException;
 import com.hgsoft.ygz.vtams.transfer.model.business.BusinessReq;
 import com.hgsoft.ygz.vtams.transfer.model.business.log.AsyncLog;
 import com.hgsoft.ygz.vtams.transfer.model.business.log.MsgLog;
 import com.hgsoft.ygz.vtams.transfer.model.business.log.SyncLog;
-import com.hgsoft.ygz.vtams.transfer.services.*;
+import com.hgsoft.ygz.vtams.transfer.services.IBusinessReqService;
+import com.hgsoft.ygz.vtams.transfer.services.ILogService;
+import com.hgsoft.ygz.vtams.transfer.services.IMsgAsyncService;
+import com.hgsoft.ygz.vtams.transfer.services.IMsgSyncService;
 import com.hgsoft.ygz.vtams.transfer.util.SpringContextUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -17,8 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.EnumMap;
 import java.util.List;
-
-import com.hgsoft.ygz.vtams.transfer.common.enums.BusinessTypeEnum;
 
 /**
  * 业务请求信息服务类
@@ -93,6 +95,22 @@ public class BusinessReqServiceImpl implements IBusinessReqService {
         return businessReqMapper.batchRemoveSyncBusinessReqByPrimaryKey(idList);
     }
 
+    @Override
+    public int batchSaveSyncInfo(List<BusinessReq> syncBusinessReqList) {
+        if (null == syncBusinessReqList || syncBusinessReqList.isEmpty()) {
+            return 0;
+        }
+        return businessReqMapper.batchSaveSyncInfo(syncBusinessReqList);
+    }
+
+    @Override
+    public int batchSaveAsyncInfo(List<BusinessReq> asyncBusinessReqList) {
+        if (null == asyncBusinessReqList || asyncBusinessReqList.isEmpty()) {
+            return 0;
+        }
+        return businessReqMapper.batchSaveAsyncInfo(asyncBusinessReqList);
+    }
+
     /**
      * 分发同步信息
      */
@@ -134,6 +152,14 @@ public class BusinessReqServiceImpl implements IBusinessReqService {
             notBusinessException.setStatusDesc("业务类型不存在");
             throw notBusinessException;
         }
+
+        //判断操作类型是否
+        final Integer operation = businessReq.getOperation();
+        if (null == operation) {
+            notBusinessException.setStatusDesc("操作类型不能为空");
+            throw notBusinessException;
+        }
+
 
         //根据业务类型获取对应的服务名
         final String serviceName = BusinessTypeEnum.valueOf(businessType).getServiceName();

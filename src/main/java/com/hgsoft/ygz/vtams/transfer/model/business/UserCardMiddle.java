@@ -1,6 +1,7 @@
 package com.hgsoft.ygz.vtams.transfer.model.business;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.hgsoft.ygz.vtams.transfer.common.validation.CustomPattern;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.NotNull;
@@ -22,22 +23,15 @@ public class UserCardMiddle implements Serializable {
      * 用户卡编号 = 卡片网络编号(4位)+CPU卡内部编号（16位）
      */
     @NotBlank(message = "用户卡号不能为空")
-    @Pattern(regexp = "^[0-9]{16}$", message = "用户卡号必须为16位数字")
+    @CustomPattern(regexp = "^[0-9]{16}$", message = "用户卡号必须为16位数字")
     private String id;
 
     /**
      * 卡类型，3位数字
      */
     @NotNull(message = "卡类型不能为空")
-    @Size(min = 3, max = 3, message = "卡类型必须由3位数字组成")
+    @CustomPattern(regexp = "^[0-9]{3}$", message = "卡类型必须由3位数字组成")
     private Integer cardType;
-
-    /**
-     * 卡品牌，1位或2位数字
-     */
-    @NotNull(message = "卡品牌不能为空")
-    @Size(min = 1, max = 2, message = "卡品牌必须由1位或2位数字组成")
-    private Integer brand;
 
     /**
      * 卡型号，不超过100位，非必填
@@ -49,7 +43,7 @@ public class UserCardMiddle implements Serializable {
      * 客服合作机构编号
      */
     @NotBlank(message = "合作机构编号不能为空")
-    @Pattern(regexp = "^[0-9]{11}$", message = "合作机构编号必须为11位数字")
+    @CustomPattern(regexp = "^[0-9]{11}$", message = "合作机构编号必须为11位数字")
     private String agencyId;
 
     /**
@@ -57,7 +51,7 @@ public class UserCardMiddle implements Serializable {
      */
     @JsonProperty("userId")
     @NotBlank(message = "客户编号不能为空")
-    @Pattern(regexp = "^[0-9]{20}$", message = "客户编号必须由20位数字组成")
+    @CustomPattern(regexp = "^[0-9]{20}$", message = "客户编号必须由20位数字组成")
     private String oldUserNo;
 
     /**
@@ -70,7 +64,7 @@ public class UserCardMiddle implements Serializable {
      * 车牌颜色
      */
     @NotBlank(message = "车牌颜色不能为空")
-    @Pattern(regexp = "^[0-9]$", message = "车牌颜色只能是1位数字")
+    @CustomPattern(regexp = "^[0-9]$", message = "车牌颜色只能是1位数字")
     private String vehicleColor;
 
     /**
@@ -89,7 +83,7 @@ public class UserCardMiddle implements Serializable {
      * 开卡方式，1：线上 2：线下
      */
     @NotNull(message = "开卡方式不能为空")
-    @Pattern(regexp = "^[12]$", message = "开卡方式只能为1[线上]或2[线下]")
+    @CustomPattern(regexp = "^[12]$", message = "开卡方式只能为1[线上]或2[线下]")
     private Integer issuedType;
 
     /**
@@ -97,7 +91,7 @@ public class UserCardMiddle implements Serializable {
      */
     @JsonProperty("channelId")
     @NotBlank(message = "渠道编号不能为空")
-    @Pattern(regexp = "^[0-9A-Za-z]+$", message = "渠道编号必须由数字或字母组成")
+    @CustomPattern(regexp = "^[0-9A-Za-z]+$", message = "渠道编号必须由数字或字母组成")
     private String oldPointCode;
 
     /**
@@ -110,7 +104,7 @@ public class UserCardMiddle implements Serializable {
      * 用户卡状态
      */
     @NotNull(message = "用户卡状态不能为空")
-    @Pattern(regexp = "^[1-6]$", message = "用户卡状态只能为1-6")
+    @CustomPattern(regexp = "^[1-6]$", message = "用户卡状态只能为1-6")
     private Integer status;
 
     /**
@@ -138,14 +132,6 @@ public class UserCardMiddle implements Serializable {
 
     public void setCardType(Integer cardType) {
         this.cardType = cardType;
-    }
-
-    public Integer getBrand() {
-        return brand;
-    }
-
-    public void setBrand(Integer brand) {
-        this.brand = brand;
     }
 
     public String getModel() {
@@ -257,7 +243,6 @@ public class UserCardMiddle implements Serializable {
         return "UserCardMiddle{" +
                 "id='" + id + '\'' +
                 ", cardType=" + cardType +
-                ", brand=" + brand +
                 ", model='" + model + '\'' +
                 ", agencyId='" + agencyId + '\'' +
                 ", oldUserNo='" + oldUserNo + '\'' +

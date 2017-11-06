@@ -12,7 +12,6 @@ import com.hgsoft.ygz.vtams.transfer.services.IJsonService;
 import com.hgsoft.ygz.vtams.transfer.util.DateUtil;
 import com.hgsoft.ygz.vtams.transfer.util.ExceptionUtil;
 import com.hgsoft.ygz.vtams.transfer.util.ValidationUtil;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -71,7 +70,7 @@ public class CardBlackServiceImpl implements ICardBlackService {
         CardBlack cardBlack = new CardBlack();
 
         //设置发行方编号
-        cardBlack.setIssuerId(VTAMsgContant.ISSUSER_ID);
+        cardBlack.setIssuerId(VTAMsgContant.ISSUER_ID);
 
         //设置用户卡黑名单生成时间
         cardBlack.setCreationTime(DateUtil.format(cardBlackMiddle.getCreationTime()));

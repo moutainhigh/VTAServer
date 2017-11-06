@@ -45,7 +45,7 @@
 
     <!-- 表字段与Model属性映射-->
     <resultMap type="com.hgsoft.ygz.vtams.transfer.model.map.CustomerSeq" id="CustomerSeqMap">
-        <result property="issuserId" column="ISSUSER_ID"/>
+        <result property="issuerId" column="ISSUER_ID"/>
         <result property="yearMonthDay" column="YEAR_MONTH_DAY"/>
         <result property="seq" column="CURRENT_SEQ"/>
         <result property="status" column="STATUS"/>
@@ -144,14 +144,14 @@
             resultMap="CustomerSeqMap">
         SELECT * FROM VTA_CUSTOMER_SEQ WHERE ROWID IN (SELECT RID FROM (SELECT ROWNUM RN, RID
         FROM (SELECT ROWID RID FROM VTA_CUSTOMER_SEQ
-        WHERE ISSUSER_ID=#{issuserId,jdbcType=CHAR} and YEAR_MONTH_DAY=#{yearMonthDay,jdbcType=CHAR}
+        WHERE ISSUER_ID=#{issuerId,jdbcType=CHAR} and YEAR_MONTH_DAY=#{yearMonthDay,jdbcType=CHAR}
         ORDER BY CURRENT_SEQ DESC) WHERE ROWNUM &lt;= 1) WHERE RN &gt; 0 ) ORDER BY CURRENT_SEQ DESC
     </select>
 
     <!-- 新增一条客户信息顺序码的记录 -->
     <insert id="saveCustomerSeq" parameterType="com.hgsoft.ygz.vtams.transfer.model.map.CustomerSeq">
-        INSERT INTO VTA_CUSTOMER_SEQ ( "ISSUSER_ID", "YEAR_MONTH_DAY", "CURRENT_SEQ", "LAST_UPDATE_DATE", "CREATION_DATE", "STATUS")
-        VALUES ( #{issuserId,jdbcType=CHAR}, #{yearMonthDay,jdbcType=CHAR}, #{seq,jdbcType=INTEGER},
+        INSERT INTO VTA_CUSTOMER_SEQ ( "ISSUER_ID", "YEAR_MONTH_DAY", "CURRENT_SEQ", "LAST_UPDATE_DATE", "CREATION_DATE", "STATUS")
+        VALUES ( #{issuerId,jdbcType=CHAR}, #{yearMonthDay,jdbcType=CHAR}, #{seq,jdbcType=INTEGER},
         #{lastUpdateDate,jdbcType=DATE}, #{creationDate,jdbcType=DATE}, #{status,jdbcType=INTEGER})
     </insert>
 

@@ -1,6 +1,7 @@
 package com.hgsoft.ygz.vtams.transfer.model.business;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.hgsoft.ygz.vtams.transfer.common.validation.CustomPattern;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.NotNull;
@@ -22,14 +23,14 @@ public class MobileServiceMiddle implements Serializable {
      * 原有的网点编号
      */
     @NotBlank(message = "旧网点编号不能为空")
-    @Pattern(regexp = "^[0-9A-Za-z]+$", message = "旧网点编号必须由数字或字母组成")
+    @CustomPattern(regexp = "^[0-9A-Za-z]+$", message = "旧网点编号必须由数字或字母组成")
     private String originalCode;
 
     /**
      * 合作机构编号
      */
     @NotBlank(message = "合作机构编号不能为空")
-    @Pattern(regexp = "^[0-9]{11}$", message = "合作机构编号必须为11位数字")
+    @CustomPattern(regexp = "^[0-9]{11}$", message = "合作机构编号必须为11位数字")
     private String agencyId;
 
     @JsonFormat(pattern = "yyyy-MM-dd")

@@ -17,7 +17,7 @@ public class CustomerSeq implements Serializable {
     /**
      * 发行方编号
      */
-    private String issuserId;
+    private String issuerId;
 
     /**
      * 年月日
@@ -32,12 +32,12 @@ public class CustomerSeq implements Serializable {
 
     private Date lastUpdateDate;
 
-    public String getIssuserId() {
-        return issuserId;
+    public String getIssuerId() {
+        return issuerId;
     }
 
-    public void setIssuserId(String issuserId) {
-        this.issuserId = issuserId;
+    public void setIssuerId(String issuerId) {
+        this.issuerId = issuerId;
     }
 
     public String getYearMonthDay() {
@@ -96,7 +96,7 @@ public class CustomerSeq implements Serializable {
 
         CustomerSeq that = (CustomerSeq) o;
 
-        if (getIssuserId() != null ? !getIssuserId().equals(that.getIssuserId()) : that.getIssuserId() != null)
+        if (getIssuerId() != null ? !getIssuerId().equals(that.getIssuerId()) : that.getIssuerId() != null)
             return false;
         if (getYearMonthDay() != null ? !getYearMonthDay().equals(that.getYearMonthDay()) : that.getYearMonthDay() != null)
             return false;
@@ -107,7 +107,7 @@ public class CustomerSeq implements Serializable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (getIssuserId() != null ? getIssuserId().hashCode() : 0);
+        result = prime * result + (getIssuerId() != null ? getIssuerId().hashCode() : 0);
         result = prime * result + (getYearMonthDay() != null ? getYearMonthDay().hashCode() : 0);
         result = prime * result + (getSeq() != null ? getSeq().hashCode() : 0);
         return result;
@@ -116,7 +116,7 @@ public class CustomerSeq implements Serializable {
     @Override
     public String toString() {
         return "CustomerSeq{" +
-                "issuserId='" + issuserId + '\'' +
+                "issuerId='" + issuerId + '\'' +
                 ", yearMonthDay='" + yearMonthDay + '\'' +
                 ", seq=" + seq +
                 ", status=" + status +

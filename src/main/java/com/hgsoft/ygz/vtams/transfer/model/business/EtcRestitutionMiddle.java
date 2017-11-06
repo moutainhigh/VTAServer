@@ -1,5 +1,6 @@
 package com.hgsoft.ygz.vtams.transfer.model.business;
 
+import com.hgsoft.ygz.vtams.transfer.common.validation.CustomPattern;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.Min;
@@ -60,7 +61,7 @@ public class EtcRestitutionMiddle implements Serializable {
      * 现场开票标识:1为已开报销凭证，2位未开报销凭证
      */
     @NotNull(message = "现场开票标识不能为空")
-    @Pattern(regexp = "^[12]$", message = "退费类型只能为1[已开报销凭证]或2[未开报销凭证]")
+    @CustomPattern(regexp = "^[12]$", message = "退费类型只能为1[已开报销凭证]或2[未开报销凭证]")
     private Integer identification;
 
     /**

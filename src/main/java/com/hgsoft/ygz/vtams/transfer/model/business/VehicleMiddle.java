@@ -2,6 +2,7 @@ package com.hgsoft.ygz.vtams.transfer.model.business;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.hgsoft.ygz.vtams.transfer.common.validation.CustomGroup;
+import com.hgsoft.ygz.vtams.transfer.common.validation.CustomPattern;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.Digits;
@@ -30,14 +31,14 @@ public class VehicleMiddle implements Serializable {
      * 车牌颜色
      */
     @NotBlank(message = "车牌颜色不能为空")
-    @Pattern(regexp = "^[0-9]$", message = "车牌颜色只能是1位数字")
+    @CustomPattern(regexp = "^[0-9]$", message = "车牌颜色只能是1位数字")
     private String vehicleColor;
 
     /**
      * 收费车型，必填
      */
     @NotNull(message = "收费车型不能为空")
-    @Pattern(regexp = "^[0-9]{1,2}$", message = "收费车型只能有1位或2位数字组成")
+    @CustomPattern(regexp = "^[0-9]{1,2}$", message = "收费车型只能有1位或2位数字组成")
     private Integer type;
 
     /**
@@ -45,7 +46,7 @@ public class VehicleMiddle implements Serializable {
      */
     @JsonProperty("userId")
     @NotBlank(message = "客户编号不能为空")
-    @Pattern(regexp = "^[0-9]{20}$", message = "客户编号必须由20位数字组成")
+    @CustomPattern(regexp = "^[0-9]{20}$", message = "客户编号必须由20位数字组成")
     private String oldUserNo;
 
     /**
@@ -57,7 +58,7 @@ public class VehicleMiddle implements Serializable {
     /**
      * 机动车所有人证件类型,3位数字，非必填
      */
-    @Size(min = 3, max = 3, message = "机动车所有人证件类型必须由3位组成")
+    @CustomPattern(regexp = "^[0-9A-Za-z]$", message = "机动车所有人证件类型必须由3位组成")
     private Integer ownerIdType;
 
     /**
@@ -88,7 +89,7 @@ public class VehicleMiddle implements Serializable {
      * 录入方式，1:线上,2:线下，必填
      */
     @NotNull(message = "录入方式不能为空")
-    @Pattern(regexp = "^[12]$", message = "录入方式只能为1[线上]或2[线下]")
+    @CustomPattern(regexp = "^[12]$", message = "录入方式只能为1[线上]或2[线下]")
     private Integer registeredType;
 
     /**
@@ -96,7 +97,7 @@ public class VehicleMiddle implements Serializable {
      */
     @JsonProperty("channelId")
     @NotBlank(message = "渠道编号不能为空")
-    @Pattern(regexp = "^[0-9A-Za-z]+$", message = "渠道编号必须由数字或字母组成")
+    @CustomPattern(regexp = "^[0-9A-Za-z]+$", message = "渠道编号必须由数字或字母组成")
     private String oldPointCode;
 
     /**
@@ -120,7 +121,7 @@ public class VehicleMiddle implements Serializable {
     /**
      * 车辆使用性质，1位数字，非必填
      */
-    @Pattern(regexp = "^[0-9]{1,4}$", message = "车辆使用性质只能由数字组成")
+    @CustomPattern(regexp = "^[0-9]{1,4}$", message = "车辆使用性质只能由数字组成")
     private Integer useCharacter;
 
     /**

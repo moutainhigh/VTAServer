@@ -3,6 +3,7 @@ package com.hgsoft.ygz.vtams.transfer.services.impl;
 import java.sql.Timestamp;
 
 import com.hgsoft.ygz.vtams.transfer.constant.VTAMsgContant;
+import com.hgsoft.ygz.vtams.transfer.model.business.MsgResult;
 import com.hgsoft.ygz.vtams.transfer.model.business.log.SyncLog;
 import com.hgsoft.ygz.vtams.transfer.model.map.PointMapping;
 import com.hgsoft.ygz.vtams.transfer.util.ValidationUtil;
@@ -90,10 +91,14 @@ public class ObuServiceImpl implements IObuService {
         obu.setRegisteredChannelId(pointMapping.getNewPointCode());
         obu.setInstallChannelId(pointMapping.getNewPointCode());
 
+
+        //设置品牌
+        obu.setBrand((int) obuMiddle.getId().charAt(6));
+        obu.setModel("OBU");
+
         //设置车辆编号: 车牌号码（18位）+间隔符（1位）+车牌颜色（1位），必填
         final String vehicleId = StringUtils.trimToEmpty(obuMiddle.getVehiclePlate()) + "_" + obuMiddle.getVehicleColor();
         obu.setVehicleId(vehicleId);
-
 
         //设置启用时间、到期时间、安装时间、状态变更时间
         obu.setEnableTime(DateUtil.format(obuMiddle.getEnableTime()));
@@ -111,14 +116,14 @@ public class ObuServiceImpl implements IObuService {
         syncException.setRequestTime(mappingEndTime);
 
         final String jsonStr = jsonService.getString(obu);
-        SyncException se = communicationService.sendMsg(jsonStr, msg.getBusinessType());
+        MsgResult msgResult = communicationService.sendMsg(jsonStr, msg.getBusinessType());
 
-        syncException.setReqFileName(se.getReqFileName());
-        syncException.setReqFileMd5(se.getReqFileMd5());
-        syncException.setResponseTime(se.getResponseTime());
-        syncException.setResponseContent(se.getResponseContent());
-        syncException.setResponseCode(se.getResponseCode());
-        syncException.setStatusDesc(se.getStatusDesc());
+        syncException.setReqFileName(msgResult.getReqFileName());
+        syncException.setReqFileMd5(msgResult.getReqFileMd5());
+        syncException.setResponseTime(msgResult.getResponseTime());
+        syncException.setResponseContent(msgResult.getResponseContent());
+        syncException.setResponseCode(msgResult.getResponseCode());
+        syncException.setStatusDesc(msgResult.getStatusDesc());
 
         //判断响应码,200-300则正常返回，否则抛出异常
         if (syncException.getResponseCode() >= 200 && syncException.getResponseCode() < 300) {

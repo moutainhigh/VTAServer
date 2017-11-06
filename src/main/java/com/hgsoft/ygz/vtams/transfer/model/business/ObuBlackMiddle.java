@@ -1,6 +1,7 @@
 package com.hgsoft.ygz.vtams.transfer.model.business;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.hgsoft.ygz.vtams.transfer.common.validation.CustomPattern;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.NotNull;
@@ -23,16 +24,16 @@ public class ObuBlackMiddle implements Serializable {
     private Long creationTime;
 
     @NotNull(message = "黑名单类型不能为空")
-    @Pattern(regexp = "^[1-4]$", message = "黑名单类型只能是1-4")
+    @CustomPattern(regexp = "^[1-4]$", message = "黑名单类型只能是1-4")
     private Integer type;
 
     @JsonProperty("OBUId")
     @NotBlank(message = "obu编号不能为空")
-    @Pattern(regexp = "^[0-9]{16}$", message = "obu编号必须为16位数字")
+    @CustomPattern(regexp = "^[0-9]{16}$", message = "obu编号必须为16位数字")
     private String obuId;
 
     @NotNull(message = "obu状态不能为空")
-    @Pattern(regexp = "^[12]$", message = "obu状态只能为1[进入黑名单]或2[解除黑名单]")
+    @CustomPattern(regexp = "^[12]$", message = "obu状态只能为1[进入黑名单]或2[解除黑名单]")
     private Integer status;
 
     public String getIssuerId() {

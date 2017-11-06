@@ -29,8 +29,8 @@ import java.security.cert.X509Certificate;
 /**
  * http连接通用类，可通过xml配置属性
  *
- * @author raozhiwen
- * @date 2017-09-06
+ * @author 赖少涯
+ * @date 2017-10-30
  */
 public class CommunicationUtil implements InitializingBean {
 
